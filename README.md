@@ -1,38 +1,31 @@
 # Avatar Grok Design
 
-An interactive motion study for the Grok Bot mark, built with React,
-TypeScript, and Vite.
+[English](README.md) | [简体中文](README.zh-CN.md)
+
+An interactive motion study for the Grok Bot mark, built with React, TypeScript,
+and Vite.
 
 The project provides live state controls, 26 body shapes, preset and custom ink
-colors, animation playback settings, pointer-following behavior, and a readable
-React adapter around the vendored mark engine.
+colors, animation playback settings, pointer-following behavior, and a
+standalone Mark rendering engine.
 
 ## Screenshots
 
 ![Avatar Grok Design desktop interface](docs/screenshots/desktop.png)
 
-Compact layout:
-
-<img
-  src="docs/screenshots/compact.png"
-  alt="Avatar Grok Design compact layout"
-  width="680"
-/>
-
 ## Distribution notice
 
-This repository includes a runtime bundle derived from a third-party application.
-That runtime is **not covered by an open-source license in this repository**.
-Do not publish or redistribute it publicly until you have confirmed the
-applicable rights and authorization. This repository does not grant a license
-for that third-party code.
+This repository includes third-party-derived animation code. It is **not
+covered by an open-source license in this repository**. Do not publish or
+redistribute that code publicly until you have confirmed the applicable rights
+and authorization. This repository does not grant a license for it.
 
 ## Features
 
 - 53 animation states grouped by lifecycle, reactions, morphs, product, and brand
 - 26 procedural body shapes
 - 11 preset ink colors plus a custom color picker
-- State-aware motion clips, facial presets, morphs, and transitions
+- State-aware clips, facial presets, morphs, and bridge transitions
 - Pointer-following gaze, blinking, squash, bob, spin, and poke effects
 - Idle settling, reduced-motion support, and 30/60 FPS limits
 - Responsive, bilingual English and Chinese control interface
@@ -70,11 +63,12 @@ src/
 │  ├─ stateModel.ts          agent facts to symbolic mark state
 │  ├─ animationClips.ts      clip profiles and state definitions
 │  ├─ shapeGeometry.ts       procedural shape paths and metrics
-│  ├─ motionEngine.ts        clip playback, transitions, gaze, and pokes
-│  ├─ ExactGrokBotMark.tsx   React lifecycle around the exact engine
-│  ├─ exactEngine.ts         typed bridge to the vendored runtime
-│  └─ GrokBotMark.tsx        readable fallback renderer
-├─ vendor/grok-bot-mark/     third-party runtime and provenance notes
+│  ├─ motionEngine.ts        simplified behavioral motion renderer
+│  ├─ markEngine.ts          typed adapter for the standalone engine
+│  ├─ MarkCanvas.tsx         React lifecycle and browser attachment
+│  ├─ reconstruction/        motion primitives used by the fallback renderer
+│  └─ GrokBotMark.tsx        fallback UI and behavioral renderer
+├─ engine/grok-bot-mark/     standalone Mark engine runtime
 ├─ App.tsx                   interactive control surface
 ├─ i18n.ts                   English and Chinese interface copy
 └─ styles.css                responsive layout and visual styling
@@ -117,16 +111,8 @@ The derivation follows the observed client behavior:
 4. Roster facts take precedence over surface facts.
 5. Otherwise, the mark returns to `idle`.
 
-## Provenance
+## Engine architecture
 
-The vendored runtime and its source paths are documented in
-[`src/vendor/grok-bot-mark/README.md`](src/vendor/grok-bot-mark/README.md).
-The surrounding TypeScript is the project adapter and interactive interface.
-
-## Repository hygiene
-
-Local reference captures in `screenshots/`, build output, dependencies, IDE
-settings, environment files, private keys, and extracted application artifacts
-are excluded through `.gitignore`. Only curated README images under
-`docs/screenshots/` are intended for version control. Review `git status` before
-publishing and keep private reference material outside the repository.
+The state scheduler, clip sampler, facial state machine, morph springs, gaze
+smoothing, and SVG projection are documented in
+[`docs/mark-engine.zh-CN.md`](docs/mark-engine.zh-CN.md).
