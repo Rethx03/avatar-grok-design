@@ -19,6 +19,7 @@ coverage/
 
 # Local reference captures and reverse-engineering artifacts
 /screenshots/
+/docs/screenshots/video.mp4
 *.asar
 app.asar.unpacked/
 

@@ -178,9 +178,16 @@ export interface AgentFacts {
 export interface MarkVisualState {
   readonly color: BotColor;
   readonly shape: BotShape;
+  readonly previousShape?: BotShape | null;
+  readonly shapeBlend: number;
   readonly state: MarkState;
   readonly face: Face;
+  readonly previousFace: Face;
+  readonly faceBlend: number;
   readonly morph: Morph | null;
+  readonly morphAmount: number;
+  readonly morphClock: number;
+  readonly morphActive: boolean;
   readonly clip: string;
   readonly motionTime: number;
   readonly spin: number;
@@ -194,6 +201,7 @@ export interface MarkVisualState {
   readonly rotationZ: number;
   readonly scaleX: number;
   readonly scaleY: number;
+  readonly zoom: number;
   readonly isPaused: boolean;
 }
 

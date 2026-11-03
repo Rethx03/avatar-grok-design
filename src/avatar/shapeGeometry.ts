@@ -15,7 +15,7 @@ export interface ShapeGeometry {
 }
 
 const METRICS: Readonly<Record<BotShape, ShapeMetrics>> = {
-  blob: { scaleX: 0.97, scaleY: 0.98, eyeGap: 0.29, eyeY: -0.02, shiftY: 0.04 },
+  blob: { scaleX: 1, scaleY: 1, eyeGap: 0.31, eyeY: -0.02, shiftY: 0.04 },
   pebble: { scaleX: 0.94, scaleY: 0.96, eyeGap: 0.3, eyeY: -0.01, shiftY: 0.06 },
   bean: { scaleX: 0.78, scaleY: 0.98, eyeGap: 0.25, eyeY: -0.02, shiftY: 0.08 },
   egg: { scaleX: 0.88, scaleY: 1.02, eyeGap: 0.27, eyeY: 0.01, shiftY: 0.04 },
@@ -71,8 +71,7 @@ const rawPoint = (shape: BotShape, angle: number): { x: number; y: number } => {
 
   switch (shape) {
     case "blob": {
-      const r = 0.9 + 0.055 * Math.sin(3 * angle + 0.55) + 0.025 * Math.cos(5 * angle - 0.4);
-      return { x: c * r * 0.97, y: s * r * 0.98 };
+      return { x: c, y: s };
     }
     case "pebble": {
       const r = 0.9 + 0.035 * Math.cos(2 * angle + 1.1);

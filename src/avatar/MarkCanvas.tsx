@@ -6,15 +6,15 @@ import {
   useRef,
 } from "react";
 import {
-  createExactMarkEngine,
-  exactEngineUpdate,
-  type ExactEngineOptions,
-} from "./exactEngine";
+  createMarkEngineForOptions,
+  updateMarkEngine,
+  type MarkEngineOptions,
+} from "./markEngine";
 import type { GrokBotMarkHandle, GrokBotMarkProps } from "./GrokBotMark";
 
 const IDLE_SETTLE_MS = 1_400;
 
-export interface ExactGrokBotMarkProps
+export interface MarkCanvasProps
   extends Omit<GrokBotMarkProps, "onFrame" | "settleIdle"> {
   readonly settleIdle?: boolean;
   readonly ariaLabel?: string;
@@ -24,10 +24,10 @@ export interface ExactGrokBotMarkProps
 const makeId = (rawId: string): string =>
   `motion-${rawId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
-export const ExactGrokBotMark = forwardRef<
+export const MarkCanvas = forwardRef<
   GrokBotMarkHandle,
-  ExactGrokBotMarkProps
->(function ExactGrokBotMark(
+  MarkCanvasProps
+>(function MarkCanvas(
   {
     state,
     shape = "blob",
@@ -48,11 +48,13 @@ export const ExactGrokBotMark = forwardRef<
   const id = makeId(rawId);
   const hostRef = useRef<HTMLSpanElement>(null);
   const canvasRef = useRef<HTMLSpanElement>(null);
-  const engineRef = useRef<ReturnType<typeof createExactMarkEngine> | null>(null);
+  const engineRef = useRef<ReturnType<typeof createMarkEngineForOptions> | null>(
+    null,
+  );
   const settleTimerRef = useRef<number | null>(null);
-  const latestRef = useRef<ExactEngineOptions | null>(null);
+  const latestRef = useRef<MarkEngineOptions | null>(null);
 
-  const currentOptions: ExactEngineOptions = {
+  const currentOptions: MarkEngineOptions = {
     id,
     shape,
     color,
@@ -67,8 +69,12 @@ export const ExactGrokBotMark = forwardRef<
   latestRef.current = currentOptions;
 
   if (engineRef.current === null) {
-    engineRef.current = createExactMarkEngine(currentOptions);
+    engineRef.current = createMarkEngineForOptions(currentOptions);
   }
+
+  const updateEngine = (): void => {
+    engineRef.current?.update(updateMarkEngine(currentOptions));
+  };
 
   const wake = (): void => {
     if (settleTimerRef.current !== null) {
@@ -121,7 +127,7 @@ export const ExactGrokBotMark = forwardRef<
   }, []);
 
   useEffect(() => {
-    engineRef.current?.update(exactEngineUpdate(currentOptions));
+    updateEngine();
     wake();
     scheduleIdleSettle();
     // The engine receives primitives plus appearance/body objects.
@@ -151,11 +157,10 @@ export const ExactGrokBotMark = forwardRef<
   return (
     <span
       aria-label={ariaLabel ?? `Grok Bot mark, ${state}`}
-      className={["grok-bot-mark", "grok-bot-mark--exact", className]
+      className={["grok-bot-mark", "grok-bot-mark--canvas", className]
         .filter(Boolean)
         .join(" ")}
       data-grok-state={state}
-      data-exact="true"
       onClick={() => {
         wake();
         engineRef.current?.poke("bounce");

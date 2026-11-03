@@ -1,4 +1,4 @@
-export interface ExactMarkAppearance {
+export interface MarkAppearance {
   readonly ink: readonly [number, number, number];
   readonly spot: readonly [number, number, number];
   readonly cutout: boolean;
@@ -6,9 +6,9 @@ export interface ExactMarkAppearance {
   readonly spotPaint?: string;
 }
 
-export interface ExactMarkEngineInput {
+export interface MarkEngineInput {
   readonly body: string;
-  readonly appearance: ExactMarkAppearance;
+  readonly appearance: MarkAppearance;
   readonly size: number;
   readonly fill: number;
   readonly resolution?: number;
@@ -25,9 +25,12 @@ export interface ExactMarkEngineInput {
   readonly isProof?: boolean;
 }
 
-export interface ExactMarkEngine {
-  attach(input: { readonly host: HTMLElement; readonly canvas: HTMLElement }): () => void;
-  update(input: Partial<ExactMarkEngineInput>): void;
+export interface MarkEngine {
+  attach(input: {
+    readonly host: HTMLElement;
+    readonly canvas: HTMLElement;
+  }): () => void;
+  update(input: Partial<MarkEngineInput>): void;
   setState(state: string): void;
   setBody(body: string): void;
   setPlaying(isPlaying: boolean): void;
@@ -39,8 +42,28 @@ export interface ExactMarkEngine {
   gaze(direction: readonly [number, number] | null): void;
 }
 
-export function w(input: ExactMarkEngineInput): ExactMarkEngine;
-export function T(shape: string): string;
-export function E(ink: string, spot?: string): ExactMarkAppearance;
-export const j: number;
+export function createMarkEngine(input: MarkEngineInput): MarkEngine;
+export function canonicalBody(shape: string): string;
+export function createAppearance(
+  ink: string,
+  spot?: string,
+): MarkAppearance;
+export const defaultFill: number;
 
+export function createMotionCore(options?: {
+  readonly body?: string;
+  readonly zoomMul?: number;
+  readonly isGazeAlways?: boolean;
+}): unknown;
+export function createStateGraph(
+  core: unknown,
+  state: string,
+  options?: unknown,
+): unknown;
+export function renderMarkScene(
+  frame: unknown,
+  appearance: MarkAppearance,
+  size: number,
+  id: string,
+  options?: unknown,
+): unknown;

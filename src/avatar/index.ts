@@ -1,5 +1,6 @@
-export { ExactGrokBotMark as GrokBotMark } from "./ExactGrokBotMark";
-export type { ExactGrokBotMarkProps } from "./ExactGrokBotMark";
+export { MarkCanvas as GrokBotMark } from "./MarkCanvas";
+export type { MarkCanvasProps } from "./MarkCanvas";
+export { GrokBotMark as BehavioralGrokBotMark } from "./GrokBotMark";
 export { GrokBotMark as ApproximateGrokBotMark } from "./GrokBotMark";
 export type {
   GrokBotMarkHandle,
