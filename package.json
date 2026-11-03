@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Clean-room reconstruction of the Grok Bot animated mark",
+  "description": "Evidence-backed 1:1 reconstruction of the Grok Bot animated mark",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",

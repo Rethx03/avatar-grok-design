@@ -120,36 +120,6 @@ button {
   gap: 15px;
 }
 
-.brand-orb {
-  position: relative;
-  width: 48px;
-  height: 48px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  background:
-    radial-gradient(circle at 32% 28%, #d9e5ff 0, #5591ff 20%, #194cdb 62%, #0d1f65 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.25),
-    0 18px 55px rgba(38, 97, 255, 0.3);
-}
-
-.brand-orb span {
-  position: absolute;
-  top: 18px;
-  width: 5px;
-  height: 8px;
-  border-radius: 99px;
-  background: #0a1022;
-}
-
-.brand-orb span:first-child {
-  left: 15px;
-}
-
-.brand-orb span:last-child {
-  right: 15px;
-}
-
 h1,
 h2,
 p {

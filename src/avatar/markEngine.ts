@@ -1,15 +1,21 @@
 import {
-  E as createAppearance,
-  T as canonicalBody,
-  j as DEFAULT_FILL,
-  w as createEngine,
-  type ExactMarkEngine,
-  type ExactMarkEngineInput,
-} from "../vendor/grok-bot-mark/index.eager-common-F4Y1-gMW.js";
+  canonicalBody,
+  createAppearance,
+  createMarkEngine,
+  defaultFill,
+  type MarkEngine,
+  type MarkEngineInput,
+} from "../engine/grok-bot-mark/mark-engine.js";
 import type { BotColor, BotShape } from "./types";
 import { COLOR_OPTIONS } from "./types";
 
-export interface ExactEngineOptions {
+export type {
+  MarkAppearance,
+  MarkEngine,
+  MarkEngineInput,
+} from "../engine/grok-bot-mark/mark-engine.js";
+
+export interface MarkEngineOptions {
   readonly id: string;
   readonly shape: BotShape;
   readonly color: BotColor;
@@ -32,13 +38,13 @@ export const resolveColorHex = (
   return COLOR_OPTIONS.find(({ id }) => id === color)?.hex ?? "#1687ff";
 };
 
-const exactInput = (options: ExactEngineOptions): ExactMarkEngineInput => ({
+const toEngineInput = (options: MarkEngineOptions): MarkEngineInput => ({
   id: options.id,
   body: canonicalBody(options.shape),
   appearance: createAppearance(resolveColorHex(options.color, options.colorHex)),
   state: options.state,
   size: options.size,
-  fill: DEFAULT_FILL,
+  fill: defaultFill,
   seed: `${options.shape}:${resolveColorHex(options.color, options.colorHex)}`,
   maxFrameRate: options.maxFrameRate,
   isPlaying: !options.paused && !options.reducedMotion,
@@ -48,14 +54,14 @@ const exactInput = (options: ExactEngineOptions): ExactMarkEngineInput => ({
   isProof: false,
 });
 
-export const createExactMarkEngine = (
-  options: ExactEngineOptions,
-): ExactMarkEngine => createEngine(exactInput(options));
+export const createMarkEngineForOptions = (
+  options: MarkEngineOptions,
+): MarkEngine => createMarkEngine(toEngineInput(options));
 
-export const exactEngineUpdate = (
-  options: ExactEngineOptions,
-): Partial<ExactMarkEngineInput> => {
-  const input = exactInput(options);
+export const updateMarkEngine = (
+  options: MarkEngineOptions,
+): Partial<MarkEngineInput> => {
+  const input = toEngineInput(options);
   return {
     body: input.body,
     appearance: input.appearance,

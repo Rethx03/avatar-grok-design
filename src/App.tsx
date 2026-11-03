@@ -5,8 +5,8 @@ import {
   useState,
 } from "react";
 import { STATE_DEFINITIONS } from "./avatar/animationClips";
-import { ExactGrokBotMark } from "./avatar/ExactGrokBotMark";
 import type { GrokBotMarkHandle } from "./avatar/GrokBotMark";
+import { MarkCanvas } from "./avatar/MarkCanvas";
 import type { BotColor, BotShape, MarkState } from "./avatar/types";
 import {
   COLOR_OPTIONS,
@@ -31,7 +31,7 @@ const ShapeGlyph = ({
   readonly shape: BotShape;
   readonly color: BotColor;
 }) => (
-  <ExactGrokBotMark
+  <MarkCanvas
     ariaLabel={ariaLabel}
     color={color}
     colorHex={colorHex}
@@ -45,6 +45,10 @@ const ShapeGlyph = ({
   />
 );
 
+const initialPaused = (): boolean =>
+  typeof window !== "undefined" &&
+  new URLSearchParams(window.location.search).get("paused") === "1";
+
 const initialReducedMotion = (): boolean =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -55,7 +59,7 @@ export default function App() {
   const [shape, setShape] = useState<BotShape>("blob");
   const [color, setColor] = useState<BotColor>("blue");
   const [customColor, setCustomColor] = useState<string | null>(null);
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(initialPaused);
   const [followPointer, setFollowPointer] = useState(true);
   const [settleIdle, setSettleIdle] = useState(true);
   const [maxFrameRate, setMaxFrameRate] = useState<30 | 60>(60);
@@ -101,10 +105,6 @@ export default function App() {
 
       <header className="topbar">
         <div className="brand-lockup">
-          <div className="brand-orb">
-            <span />
-            <span />
-          </div>
           <div>
             <h1>Grok Bot Mark</h1>
           </div>
@@ -152,7 +152,7 @@ export default function App() {
               <span>{copy.maxFrameRate(maxFrameRate)}</span>
             </div>
             <div className="stage-avatar">
-              <ExactGrokBotMark
+              <MarkCanvas
                 ariaLabel={`${copy.markLabel}: ${copy.states[state]}`}
                 color={color}
                 colorHex={customColor ?? undefined}

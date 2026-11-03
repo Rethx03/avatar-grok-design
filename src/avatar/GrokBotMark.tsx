@@ -56,7 +56,7 @@ const normalizedPointer = (
   clientY: number,
 ): { x: number; y: number } => {
   const rect = element.getBoundingClientRect();
-  const reach = Math.max(rect.width, rect.height, 1) * 0.5;
+  const reach = Math.max(rect.width, 1) * 2;
   return {
     x: Math.max(-1, Math.min(1, (clientX - (rect.left + rect.width / 2)) / reach)),
     y: Math.max(-1, Math.min(1, -(clientY - (rect.top + rect.height / 2)) / reach)),
@@ -67,6 +67,7 @@ export interface GrokBotMarkProps {
   readonly state: MarkState;
   readonly shape?: BotShape;
   readonly color?: BotColor;
+  readonly colorHex?: string;
   readonly size?: number;
   readonly paused?: boolean;
   readonly followPointer?: boolean;
@@ -74,6 +75,7 @@ export interface GrokBotMarkProps {
   readonly maxFrameRate?: 30 | 60;
   readonly reducedMotion?: boolean;
   readonly className?: string;
+  readonly ariaLabel?: string;
   readonly onFrame?: (frame: MarkVisualState) => void;
 }
 
@@ -98,7 +100,7 @@ const EyeLayer = ({
   const turn = Math.cos(frame.rotationY);
   const gap = eyeGap * Math.max(0.56, Math.abs(turn));
   const lookX = frame.gazeX * 2.4;
-  const lookY = frame.gazeY * 1.8;
+  const lookY = -frame.gazeY * 1.8;
   const blinkScale = Math.max(0.06, 1 - frame.blink);
   const faceScale =
     frame.face === "surprised"
@@ -112,10 +114,8 @@ const EyeLayer = ({
             : frame.face === "happy"
               ? 0.76
               : 1;
-  const highlightOffsetX = frame.gazeX * 0.6 + 1.2;
-  const highlightOffsetY = frame.gazeY * 0.4 - 2;
-  const eyeWidth = radius * 0.15;
-  const eyeHeight = radius * 0.28 * faceScale * blinkScale;
+  const eyeWidth = radius * 0.19;
+  const eyeHeight = radius * 0.4 * faceScale * blinkScale;
 
   if (frame.face === "happy" && frame.blink < 0.4) {
     return (
@@ -131,6 +131,11 @@ const EyeLayer = ({
       {[-1, 1].map((side) => {
         const cx = side * gap + lookX;
         const cy = eyeY + lookY;
+        const eyeTilt =
+          (frame.rotationY * 180) / Math.PI * 0.16 +
+          (frame.rotationX * 180) / Math.PI * 0.1 +
+          (frame.rotationZ * 180) / Math.PI * 0.2 -
+          side * 12;
         return (
           <g key={side}>
             <ellipse
@@ -138,15 +143,8 @@ const EyeLayer = ({
               cy={cy}
               rx={eyeWidth / 2}
               ry={Math.max(0.8, eyeHeight / 2)}
+              transform={`rotate(${eyeTilt} ${cx} ${cy})`}
             />
-            {frame.face !== "sleepy" && frame.face !== "squinted" && frame.blink < 0.55 ? (
-              <circle
-                cx={cx + highlightOffsetX}
-                cy={cy + highlightOffsetY}
-                fill="rgba(255,255,255,.82)"
-                r={radius * 0.034}
-              />
-            ) : null}
           </g>
         );
       })}
@@ -169,7 +167,7 @@ const MorphLayer = ({
   readonly color: string;
   readonly radius: number;
 }) => {
-  const phase = frame.motionTime;
+  const phase = frame.morphClock;
   const ringRadius = radius + 9;
   const soft = lighten(color, 0.18);
   const faint = lighten(color, 0.45);
@@ -346,17 +344,31 @@ const MorphLayer = ({
 };
 
 const MarkSvg = ({
+  ariaLabel,
+  colorHex: customColorHex,
   frame,
   size,
 }: {
+  readonly ariaLabel?: string;
+  readonly colorHex?: string;
   readonly frame: MarkVisualState;
   readonly size: number;
 }) => {
   const rawId = useId().replaceAll(":", "");
-  const radius = 34;
+  const radius = 36;
   const geometry = useMemo(() => getShapeGeometry(frame.shape, radius), [frame.shape]);
+  const previousGeometry = useMemo(
+    () =>
+      frame.previousShape == null
+        ? null
+        : getShapeGeometry(frame.previousShape, radius),
+    [frame.previousShape],
+  );
   const extent = getShapeExtent(frame.shape, radius);
-  const base = colorHex(frame.color);
+  const base =
+    customColorHex !== undefined && /^#[0-9a-f]{6}$/i.test(customColorHex)
+      ? customColorHex
+      : colorHex(frame.color);
   const isDark = frame.color === "black" || frame.color === "gray";
   const eyeColor = isDark ? "rgba(255,255,255,.9)" : "rgba(12,15,23,.92)";
   const turnScale = 0.86 + Math.max(0, Math.cos(frame.rotationY)) * 0.14;
@@ -364,14 +376,12 @@ const MarkSvg = ({
   const bodyTransform = [
     `translate(${VIEWBOX / 2 + frame.offsetX + turnShift} ${VIEWBOX / 2 + frame.offsetY})`,
     `rotate(${frame.rotationZ})`,
-    `scale(${frame.scaleX * turnScale} ${frame.scaleY})`,
+    `scale(${frame.scaleX * turnScale * frame.zoom} ${frame.scaleY * frame.zoom})`,
   ].join(" ");
-  const highlightX = -radius * 0.3 + Math.sin(frame.rotationY) * -3;
-  const highlightY = -radius * 0.35;
 
   return (
     <svg
-      aria-label={`Grok Bot mark, ${frame.state}`}
+      aria-label={ariaLabel ?? `Grok Bot mark, ${frame.state}`}
       className="mark-svg"
       height={size}
       role="img"
@@ -427,13 +437,26 @@ const MarkSvg = ({
         ry={extent * 0.92}
       />
       <g transform={`translate(${VIEWBOX / 2} ${VIEWBOX / 2})`}>
-        <MorphLayer color={base} frame={frame} radius={radius} />
+        <g opacity={frame.morphAmount}>
+          <MorphLayer color={base} frame={frame} radius={radius} />
+        </g>
       </g>
 
       <g transform={bodyTransform}>
+        {previousGeometry === null ? null : (
+          <g opacity={1 - frame.shapeBlend}>
+            <path
+              d={previousGeometry.bodyPath}
+              fill={`url(#${rawId}-body)`}
+              stroke={`url(#${rawId}-rim)`}
+              strokeWidth="1.2"
+            />
+          </g>
+        )}
         <path
           d={geometry.bodyPath}
           fill={`url(#${rawId}-body)`}
+          opacity={frame.shapeBlend}
           stroke={`url(#${rawId}-rim)`}
           strokeWidth="1.2"
         />
@@ -446,15 +469,6 @@ const MarkSvg = ({
             strokeWidth={radius * 0.12}
           />
         )}
-        <ellipse
-          cx={highlightX}
-          cy={highlightY}
-          fill="rgba(255,255,255,.2)"
-          opacity=".72"
-          rx={radius * 0.21}
-          ry={radius * 0.12}
-          transform={`rotate(-24 ${highlightX} ${highlightY})`}
-        />
         <EyeLayer
           eyeColor={eyeColor}
           eyeGap={geometry.metrics.eyeGap * radius}
@@ -473,6 +487,7 @@ export const GrokBotMark = forwardRef<GrokBotMarkHandle, GrokBotMarkProps>(
       state,
       shape = "blob",
       color = "blue",
+      colorHex,
       size = 240,
       paused = false,
       followPointer = true,
@@ -480,6 +495,7 @@ export const GrokBotMark = forwardRef<GrokBotMarkHandle, GrokBotMarkProps>(
       maxFrameRate = 60,
       reducedMotion = false,
       className,
+      ariaLabel,
       onFrame,
     },
     forwardedRef,
@@ -517,14 +533,7 @@ export const GrokBotMark = forwardRef<GrokBotMarkHandle, GrokBotMarkProps>(
         restart() {
           const engine = engineRef.current;
           if (engine === null) return;
-          engine.setInputs({
-            color,
-            shape,
-            state,
-            paused: paused || reducedMotion,
-            compact: size < 48,
-            settleIdle,
-          });
+          engine.restart();
         },
       }),
       [color, paused, reducedMotion, settleIdle, shape, size, state],
@@ -557,18 +566,20 @@ export const GrokBotMark = forwardRef<GrokBotMarkHandle, GrokBotMarkProps>(
         const engine = engineRef.current;
         if (engine === null) return;
         const delta = Math.min(0.1, (now - last) / 1000);
-        last = now;
 
         if (
           visible &&
           document.visibilityState !== "hidden" &&
           now - lastPublish >= frameDuration
         ) {
+          last = now;
           engine.advance(delta);
           const nextFrame = engine.frame();
           lastPublish = now;
           setFrame(nextFrame);
           frameListenerRef.current?.(nextFrame);
+        } else if (!visible || document.visibilityState === "hidden") {
+          last = now;
         }
 
         animationFrame = requestAnimationFrame(tick);
@@ -605,6 +616,7 @@ export const GrokBotMark = forwardRef<GrokBotMarkHandle, GrokBotMarkProps>(
 
     return (
       <span
+        aria-label={ariaLabel ?? `Grok Bot mark, ${state}`}
         className={["grok-bot-mark", className].filter(Boolean).join(" ")}
         data-grok-state={state}
         data-paused={frame?.isPaused === true ? "true" : undefined}
@@ -612,16 +624,26 @@ export const GrokBotMark = forwardRef<GrokBotMarkHandle, GrokBotMarkProps>(
         onPointerLeave={handlePointerLeave}
         onPointerMove={handlePointerMove}
         ref={hostRef}
+        role="img"
         style={{ height: size, width: size }}
       >
         <MarkSvg
+          ariaLabel={ariaLabel}
+          colorHex={colorHex}
           frame={
             frame ?? {
               color,
               shape,
+              previousShape: null,
+              shapeBlend: 1,
               state,
               face: "neutral",
+              previousFace: "neutral",
+              faceBlend: 1,
               morph: null,
+              morphAmount: 0,
+              morphClock: 0,
+              morphActive: false,
               clip: "Idle_B",
               motionTime: 0,
               spin: 0,
@@ -635,6 +657,7 @@ export const GrokBotMark = forwardRef<GrokBotMarkHandle, GrokBotMarkProps>(
               rotationZ: 0,
               scaleX: 1,
               scaleY: 1,
+              zoom: 1,
               isPaused: paused || reducedMotion,
             }
           }
