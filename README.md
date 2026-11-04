@@ -13,13 +13,6 @@ standalone Mark rendering engine.
 
 ![Avatar Grok Design desktop interface](docs/screenshots/desktop.png)
 
-## Distribution notice
-
-This repository includes third-party-derived animation code. It is **not
-covered by an open-source license in this repository**. Do not publish or
-redistribute that code publicly until you have confirmed the applicable rights
-and authorization. This repository does not grant a license for it.
-
 ## Features
 
 - 53 animation states grouped by lifecycle, reactions, morphs, product, and brand
