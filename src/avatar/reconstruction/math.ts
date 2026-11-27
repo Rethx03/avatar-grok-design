@@ -47,7 +47,7 @@ const bezierDerivative = (
 
 /**
  * Solves the x-axis of a CSS-style cubic-bezier curve, then evaluates y.
- * The shipped engine uses the same eight-step Newton strategy.
+ * The Mark engine uses the same eight-step Newton strategy.
  */
 export const cubicBezierEase = (
   progress: number,

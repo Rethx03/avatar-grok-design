@@ -39,7 +39,7 @@ const settlementState = (
 };
 
 /**
- * Behavioral reconstruction of the app's active mark state:
+ * Behavioral derivation of the active mark state:
  * active work wins, then a recent settlement, then the fallback surface.
  */
 export const deriveMarkState = (
@@ -74,7 +74,7 @@ export const deriveMarkState = (
 
 export const listMarkStates = (): MarkState[] => {
   const seen = new Set<MarkState>();
-  // Keep this explicit so the order mirrors the observed UI groups.
+  // Keep this explicit so the order mirrors the UI groups.
   const values: MarkState[] = [
     "idle",
     "listening",

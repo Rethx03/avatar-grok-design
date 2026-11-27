@@ -24,7 +24,7 @@ describe("deriveMarkState", () => {
     ).toBe("streaming");
   });
 
-  it("maps observed activity verbs", () => {
+  it("maps activity verbs", () => {
     expect(ACTIVITY_TO_STATE.searching).toBe("searching");
     expect(ACTIVITY_TO_STATE.connecting).toBe("orbit");
     expect(ACTIVITY_TO_STATE["on-your-computer"]).toBe("controlling");

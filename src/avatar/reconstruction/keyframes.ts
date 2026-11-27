@@ -101,7 +101,7 @@ export interface GeneratedClipSection extends RecipeSection {
 
 /**
  * Expands the compact clip profile into real keyframe tracks. These curves are
- * authored for this reconstruction; they approximate the observed rhythm while
+ * authored for this reconstruction; they approximate the engine rhythm while
  * keeping the runtime data readable and independently tunable.
  *
  * `pitch`/`roll` add a constant lean that the clip bridge blends in and out;

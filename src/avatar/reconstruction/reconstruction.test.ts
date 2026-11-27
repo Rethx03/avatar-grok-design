@@ -50,7 +50,7 @@ describe("reconstruction keyframes", () => {
     expect(sampleVectorTrack<readonly number[]>(track, 2)).toEqual([10, 20]);
   });
 
-  it("expands every observed clip into a sampled pose", () => {
+  it("expands every clip into a sampled pose", () => {
     const labClip = /^(Sneeze_|Shiver_|Stretch_|Doze_|Pace_|Wink_)/;
     for (const profile of Object.values(MOTION_CLIPS)) {
       const section = createClipSection(profile);

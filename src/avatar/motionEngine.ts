@@ -102,9 +102,9 @@ const interpolate = (
 const pulseDuration = (pulse: Pulse): number => pulse.duration;
 
 /**
- * Readable behavioral reconstruction of the shipped mark animation pipeline.
+ * Readable behavioral implementation of the Mark animation pipeline.
  *
- * The implementation keeps the observed system boundaries: clip sampling,
+ * The implementation keeps the same system boundaries: clip sampling,
  * bridge transitions, state scheduling, gaze smoothing, facial timing, spring
  * morphs, pokes, and idle settling. The clip curves themselves are authored
  * approximations used by the simplified behavioral renderer.

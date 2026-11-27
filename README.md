@@ -98,7 +98,7 @@ mark.current?.poke("spin", 2);
 const state = deriveMarkState(agentFacts, Date.now(), surfaceFacts);
 ```
 
-The derivation follows the observed client behavior:
+The derivation works as follows:
 
 1. Running or composing agents use `streaming` or the current activity mapping.
 2. `awaitingUserResponse` maps to `blocked`.

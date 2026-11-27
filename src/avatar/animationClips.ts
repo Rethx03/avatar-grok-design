@@ -215,7 +215,7 @@ export const STATE_DEFINITIONS: Readonly<
   turntable: { clips: ["Rotation_B"] },
 
   // ---- Lab states: not listed in MARK_STATE_GROUPS, so the app UI and the
-  // vendored engine never receive them. They are playable by MarkMotionEngine. ----
+  // mark engine never receive them. They are playable by MarkMotionEngine. ----
   sneeze: {
     clips: ["Sneeze_A", "Sneeze_B", "Sneeze_C"],
     face: "squinted",
