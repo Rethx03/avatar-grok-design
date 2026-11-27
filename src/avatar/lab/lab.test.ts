@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { MarkState } from "../types";
-import { MOTION_CLIPS, STATE_DEFINITIONS } from "../animationClips";
-import { MarkMotionEngine } from "../motionEngine";
-import { LAB_FORMS, buildFormPath } from "./forms";
+import type { MarkState } from "../types.js";
+import { MOTION_CLIPS, STATE_DEFINITIONS } from "../animationClips.js";
+import { MarkMotionEngine } from "../motionEngine.js";
+import { LAB_FORMS, buildFormPath } from "./forms.js";
 
 const LAB_STATES = ["sneeze", "shiver", "stretch", "doze", "pace", "wink"] as const;
 

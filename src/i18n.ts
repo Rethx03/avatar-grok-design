@@ -5,7 +5,7 @@ import {
   type Face,
   type MarkState,
   type Morph,
-} from "./avatar/types";
+} from "./avatar/types.js";
 
 export type Language = "en" | "zh";
 

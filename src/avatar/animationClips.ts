@@ -1,4 +1,4 @@
-import type { Face, MarkState, Morph } from "./types";
+import type { Face, MarkState, Morph } from "./types.js";
 
 export type Ease = readonly [number, number, number, number];
 

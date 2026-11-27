@@ -6,8 +6,8 @@ import {
   type MarkEngine,
   type MarkEngineInput,
 } from "../engine/mark-engine.js";
-import type { BotColor, BotShape } from "./types";
-import { COLOR_OPTIONS } from "./types";
+import type { BotColor, BotShape } from "./types.js";
+import { COLOR_OPTIONS } from "./types.js";
 
 export type {
   MarkAppearance,

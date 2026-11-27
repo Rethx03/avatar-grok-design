@@ -10,7 +10,7 @@ import {
   resolveColorHex,
   updateMarkEngine,
   type MarkEngineOptions,
-} from "./markEngine";
+} from "./markEngine.js";
 
 const options: MarkEngineOptions = {
   id: "mark-engine-test",

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { MOTION_CLIPS, STATE_DEFINITIONS } from "./animationClips";
-import { MarkMotionEngine } from "./motionEngine";
-import { listMarkStates } from "./stateModel";
+import { MOTION_CLIPS, STATE_DEFINITIONS } from "./animationClips.js";
+import { MarkMotionEngine } from "./motionEngine.js";
+import { listMarkStates } from "./stateModel.js";
 
 describe("motion state definitions", () => {
   it("defines a valid clip for every state", () => {

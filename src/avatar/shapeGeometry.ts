@@ -1,5 +1,5 @@
-import type { BotShape } from "./types";
-import { getLabForm } from "./lab/forms";
+import type { BotShape } from "./types.js";
+import { getLabForm } from "./lab/forms.js";
 
 interface ShapeMetrics {
   readonly scaleX: number;

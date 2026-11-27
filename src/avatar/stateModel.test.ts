@@ -3,7 +3,7 @@ import {
   ACTIVITY_TO_STATE,
   SETTLEMENT_VISIBLE_MS,
   deriveMarkState,
-} from "./stateModel";
+} from "./stateModel.js";
 
 describe("deriveMarkState", () => {
   it("defaults to idle", () => {

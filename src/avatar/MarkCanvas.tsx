@@ -9,8 +9,8 @@ import {
   createMarkEngineForOptions,
   updateMarkEngine,
   type MarkEngineOptions,
-} from "./markEngine";
-import type { GrokBotMarkHandle, GrokBotMarkProps } from "./GrokBotMark";
+} from "./markEngine.js";
+import type { GrokBotMarkHandle, GrokBotMarkProps } from "./GrokBotMark.js";
 
 const IDLE_SETTLE_MS = 1_400;
 

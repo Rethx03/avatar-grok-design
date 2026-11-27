@@ -8,15 +8,15 @@ import {
   useRef,
   useState,
 } from "react";
-import { MarkMotionEngine } from "./motionEngine";
-import { getShapeGeometry, getShapeExtent } from "./shapeGeometry";
+import { MarkMotionEngine } from "./motionEngine.js";
+import { getShapeGeometry, getShapeExtent } from "./shapeGeometry.js";
 import type {
   BotColor,
   BotShape,
   MarkState,
   MarkVisualState,
-} from "./types";
-import { COLOR_OPTIONS } from "./types";
+} from "./types.js";
+import { COLOR_OPTIONS } from "./types.js";
 
 const VIEWBOX = 120;
 const TAU = Math.PI * 2;

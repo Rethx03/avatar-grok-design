@@ -1,4 +1,4 @@
-import { createSeededRandom } from "./math";
+import { createSeededRandom } from "./math.js";
 
 const swap = <T>(values: T[], left: number, right: number): void => {
   const value = values[left];

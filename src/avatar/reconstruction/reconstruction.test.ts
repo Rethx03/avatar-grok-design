@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { MarkMotionEngine } from "../motionEngine";
-import { ClipBag } from "./clipBag";
+import { MarkMotionEngine } from "../motionEngine.js";
+import { ClipBag } from "./clipBag.js";
 import {
   createClipSection,
   samplePose,
   sampleVectorTrack,
-} from "./keyframes";
+} from "./keyframes.js";
 import {
   cubicBezierEase,
   createSpring,
   springStep,
   windowPulse,
-} from "./math";
-import { MOTION_CLIPS } from "../animationClips";
+} from "./math.js";
+import { MOTION_CLIPS } from "../animationClips.js";
 
 describe("reconstruction math", () => {
   it("solves cubic-bezier timing curves", () => {

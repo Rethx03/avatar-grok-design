@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { getShapeGeometry } from "./shapeGeometry";
-import { SHAPE_OPTIONS } from "./types";
+import { getShapeGeometry } from "./shapeGeometry.js";
+import { SHAPE_OPTIONS } from "./types.js";
 
 describe("shape geometry", () => {
   it.each(SHAPE_OPTIONS)("generates a closed SVG path for $id", ({ id }) => {

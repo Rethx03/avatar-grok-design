@@ -1,12 +1,12 @@
-import type { MotionClip } from "../animationClips";
-import type { Face } from "../types";
+import type { MotionClip } from "../animationClips.js";
+import type { Face } from "../types.js";
 import {
   clamp,
   cubicBezierEase,
   shortestAngle,
   smoothstep,
   type Easing,
-} from "./math";
+} from "./math.js";
 
 export type Vector2 = readonly [number, number];
 export type Vector3 = readonly [number, number, number];

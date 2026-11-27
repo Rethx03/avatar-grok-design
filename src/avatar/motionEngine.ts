@@ -1,5 +1,5 @@
-import { clipProfile, STATE_DEFINITIONS } from "./animationClips";
-import { ClipBag } from "./reconstruction/clipBag";
+import { clipProfile, STATE_DEFINITIONS } from "./animationClips.js";
+import { ClipBag } from "./reconstruction/clipBag.js";
 import {
   DEFAULT_ZOOM,
   createBridgeSection,
@@ -9,7 +9,7 @@ import {
   type GeneratedClipSection,
   type RecipePose,
   type RecipeSection,
-} from "./reconstruction/keyframes";
+} from "./reconstruction/keyframes.js";
 import {
   clamp,
   createSpring,
@@ -19,7 +19,7 @@ import {
   springSubsteps,
   type SpringState,
   windowPulse,
-} from "./reconstruction/math";
+} from "./reconstruction/math.js";
 import type {
   BotColor,
   BotShape,
@@ -27,7 +27,7 @@ import type {
   MarkState,
   MarkVisualState,
   Morph,
-} from "./types";
+} from "./types.js";
 
 const MAX_DELTA_SECONDS = 0.1;
 const BRIDGE_DURATION_SECONDS = 0.28;

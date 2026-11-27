@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { COPY } from "./i18n";
+import { COPY } from "./i18n.js";
 
 describe("interface translations", () => {
   it("covers every localizable domain identity", () => {

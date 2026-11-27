@@ -3,7 +3,7 @@ import type {
   AgentFacts,
   MarkState,
   TurnSettlement,
-} from "./types";
+} from "./types.js";
 
 export const SETTLEMENT_VISIBLE_MS = 8_000;
 
