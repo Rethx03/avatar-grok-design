@@ -1,0 +1,38 @@
+/*
+ * Component styles for the Grok Bot mark.
+ * Import this file once in the host application:
+ *
+ *   import "avatar-grok-design/style.css";
+ *
+ * The mark itself renders inline SVG inside a sized host element; these rules
+ * keep the host square and let the SVG fill it without leaking app styles.
+ */
+.grok-bot-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+}
+
+.grok-bot-mark__canvas {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.grok-bot-mark__canvas > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mark-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 30px 34px rgba(0, 0, 0, 0.32));
+}

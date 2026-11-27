@@ -1,25 +1,72 @@
 {
   "name": "avatar-grok-design",
+  "version": "0.2.0",
   "private": true,
-  "version": "0.1.0",
   "type": "module",
-  "description": "Evidence-backed 1:1 reconstruction of the Grok Bot animated mark",
+  "description": "Grok Bot animated mark: React and framework-free components with 28 body shapes, 11 ink colors, 59 motion states, ready-made presets and behaviour actions.",
+  "license": "UNLICENSED",
+  "keywords": [
+    "grok",
+    "avatar",
+    "mark",
+    "logo",
+    "animation",
+    "motion",
+    "react",
+    "svg",
+    "canvas",
+    "agent",
+    "preset"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    },
+    "./vanilla": {
+      "types": "./dist/types/vanilla.d.ts",
+      "import": "./dist/vanilla.js",
+      "require": "./dist/vanilla.cjs",
+      "default": "./dist/vanilla.js"
+    },
+    "./style.css": "./dist/avatar.css",
+    "./avatar.css": "./dist/avatar.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.zh-CN.md"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "npm run check && npm run build:lib",
+    "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.build.json && node scripts/build-assets.mjs",
+    "build:demo": "npm run check && vite build --outDir demo-dist",
     "check": "tsc --noEmit",
     "test": "vitest run",
-    "preview": "vite preview"
+    "preview": "vite preview --outDir demo-dist",
+    "verify:package": "node scripts/verify-package.mjs",
+    "prepublishOnly": "npm run build && npm test && npm run verify:package"
   },
-  "dependencies": {
-    "react": "19.3.1",
-    "react-dom": "19.3.1"
+  "peerDependencies": {
+    "react": ">=18.3.0 <20"
   },
   "devDependencies": {
     "@types/node": "26.6.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "typescript": "7.0.2",
     "vite": "8.3.5",
     "vitest": "5.0.5"

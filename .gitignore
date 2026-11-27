@@ -3,9 +3,12 @@ node_modules/
 
 # Build output
 dist/
+demo-dist/
+.package-check/
 coverage/
 .vite/
 *.tsbuildinfo
+*.tgz
 
 # Local environment and credentials
 .env

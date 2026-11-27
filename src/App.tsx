@@ -4,21 +4,23 @@ import {
   useRef,
   useState,
 } from "react";
-import { STATE_DEFINITIONS } from "./avatar/animationClips";
-import type { GrokBotMarkHandle } from "./avatar/GrokBotMark";
-import { MarkCanvas } from "./avatar/MarkCanvas";
-import type { BotColor, BotShape, MarkState } from "./avatar/types";
 import {
   COLOR_OPTIONS,
   MARK_STATE_GROUPS,
+  MarkCanvas,
   SHAPE_OPTIONS,
-} from "./avatar/types";
+  STATE_DEFINITIONS,
+  type BotColor,
+  type BotShape,
+  type GrokBotMarkHandle,
+  type MarkState,
+} from "./index.js";
 import {
   COPY,
   getInitialLanguage,
   LANGUAGE_STORAGE_KEY,
   type Language,
-} from "./i18n";
+} from "./i18n.js";
 
 const ShapeGlyph = ({
   ariaLabel,
