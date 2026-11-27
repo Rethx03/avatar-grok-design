@@ -1,17 +1,18 @@
-# Avatar Grok Design
+# Blobmark
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-An interactive motion study for the Grok Bot mark, packaged as an npm library.
-The package ships ready-made looks, appearance configuration, and behaviour
-actions, so another project can render the animated mark with a single import.
+Blobmark is an animated agent mark and npm library, grown from an interactive
+motion study of the Grok Bot mark. The package ships ready-made looks,
+appearance configuration, and behaviour actions, so another project can render
+the animated mark with a single import.
 
 The repository also contains the interactive control surface used to design and
 inspect every shape, color, and state.
 
 ## Screenshots
 
-![Avatar Grok Design desktop interface](docs/screenshots/desktop.png)
+![Blobmark desktop interface](docs/screenshots/desktop.png)
 
 ## Features
 
@@ -40,20 +41,20 @@ The package is consumed like any other dependency. Three ways to install it:
 
 ```bash
 # From a local checkout
-npm install ../avatar-grok-design
+npm install ../blobmark
 
 # From a packed tarball (works without a registry)
-npm pack                # creates avatar-grok-design-0.2.0.tgz
-npm install ./avatar-grok-design-0.2.0.tgz
+npm pack                # creates blobmark-0.2.0.tgz
+npm install ./blobmark-0.2.0.tgz
 
 # From a registry, after publishing
-npm install avatar-grok-design
+npm install blobmark
 ```
 
 The stylesheet is part of the package and must be imported once:
 
 ```ts
-import "avatar-grok-design/style.css";
+import "blobmark/style.css";
 ```
 
 ### React
@@ -64,8 +65,8 @@ import {
   createAvatarConfig,
   useGrokBotAvatar,
   type AgentFacts,
-} from "avatar-grok-design";
-import "avatar-grok-design/style.css";
+} from "blobmark";
+import "blobmark/style.css";
 
 export function AgentAvatar({ facts }: { facts: AgentFacts }) {
   const avatar = useGrokBotAvatar({ preset: "mint", size: 160, facts });
@@ -84,7 +85,7 @@ export function AgentAvatar({ facts }: { facts: AgentFacts }) {
 Without the hook, the component is fully controlled:
 
 ```tsx
-import { GrokBotMark, createAvatarConfig } from "avatar-grok-design";
+import { GrokBotMark, createAvatarConfig } from "blobmark";
 
 const config = createAvatarConfig({ preset: "ghost", size: 96 });
 
@@ -112,7 +113,7 @@ import {
   createAvatarConfig,
   listAvatarPresets,
   type AvatarConfig,
-} from "avatar-grok-design";
+} from "blobmark";
 
 const presetIds = Object.keys(AVATAR_PRESETS);
 // classic, midnight, ember, mint, neon, ghost, cookie, starlight, sunset, brand
@@ -138,7 +139,7 @@ the resting state and returns to the state that was active before the action
 started, so an agent-driven state never gets lost.
 
 ```ts
-import { AVATAR_ACTIONS, actionDurationMs, resolveAvatarAction } from "avatar-grok-design";
+import { AVATAR_ACTIONS, actionDurationMs, resolveAvatarAction } from "blobmark";
 
 // greet, nod, celebrate, spin, think, search, code, success, failure,
 // sleep, wake, alert, dance, listen
@@ -153,7 +154,7 @@ avatar.stop(); // cancels and restores the resting state
 For non-React code the same scheduler is exported:
 
 ```ts
-import { createAvatarActionRunner } from "avatar-grok-design/vanilla";
+import { createAvatarActionRunner } from "blobmark/vanilla";
 
 const runner = createAvatarActionRunner({
   getBaseState: () => mark.config.state,
@@ -171,7 +172,7 @@ agent lifecycle automatically. The derived state wins over the `state` option;
 actions temporarily override both and return to the derived state when they end.
 
 ```ts
-import { deriveMarkState } from "avatar-grok-design";
+import { deriveMarkState } from "blobmark";
 
 const state = deriveMarkState(agentFacts, Date.now(), surfaceFacts);
 ```
@@ -183,8 +184,8 @@ element. It is suitable for Vue, Svelte, Angular, plain HTML, or a browser
 extension.
 
 ```ts
-import { mountGrokBotMark } from "avatar-grok-design/vanilla";
-import "avatar-grok-design/style.css";
+import { mountGrokBotMark } from "blobmark/vanilla";
+import "blobmark/style.css";
 
 const mark = mountGrokBotMark("#stage", {
   preset: "ember",
@@ -215,16 +216,16 @@ import {
   createMarkEngine,
   getShapeGeometry,
   STATE_DEFINITIONS,
-} from "avatar-grok-design/vanilla";
+} from "blobmark/vanilla";
 ```
 
 ### Package exports
 
 | Import                        | Contents                                                             |
 | ----------------------------- | -------------------------------------------------------------------- |
-| `avatar-grok-design`          | React component, hook, presets, actions, catalogs, engine primitives |
-| `avatar-grok-design/vanilla`  | DOM mounting, presets, actions, catalogs, engine – no React           |
-| `avatar-grok-design/style.css`| Component stylesheet                                                 |
+| `blobmark`          | React component, hook, presets, actions, catalogs, engine primitives |
+| `blobmark/vanilla`  | DOM mounting, presets, actions, catalogs, engine – no React           |
+| `blobmark/style.css`| Component stylesheet                                                 |
 
 The catalogs are exported as values for building your own UI:
 `SHAPE_OPTIONS` (28), `COLOR_OPTIONS` (11 + hex), `MARK_STATE_GROUPS` (59),
@@ -274,7 +275,7 @@ a strict `nodenext` consumer against the published declarations.
 dist/
 ├─ index.js / index.cjs        React entry
 ├─ vanilla.js / vanilla.cjs    React-free entry
-├─ avatar.css                  component stylesheet (avatar-grok-design/style.css)
+├─ avatar.css                  component stylesheet (blobmark/style.css)
 └─ types/                      declaration tree for both entries
 ```
 

@@ -55,7 +55,7 @@ interface CopySet {
 }
 
 const EN: CopySet = {
-  documentTitle: "Grok Bot Motion Study",
+  documentTitle: "Blobmark Motion Study",
   svgProjection: "SVG projection",
   stateDriven: "State-driven",
   markLabel: "Grok Bot mark",
@@ -229,7 +229,7 @@ const EN: CopySet = {
 };
 
 const ZH: CopySet = {
-  documentTitle: "Grok Bot 动作研究",
+  documentTitle: "Blobmark 动作研究",
   svgProjection: "SVG 投影",
   stateDriven: "状态驱动",
   markLabel: "Grok Bot 标志",
@@ -407,7 +407,7 @@ export const COPY: Readonly<Record<Language, CopySet>> = {
   zh: ZH,
 };
 
-export const LANGUAGE_STORAGE_KEY = "avatar-grok-design.language";
+export const LANGUAGE_STORAGE_KEY = "blobmark.language";
 
 export function getInitialLanguage(): Language {
   if (typeof window === "undefined") {

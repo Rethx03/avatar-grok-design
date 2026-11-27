@@ -2,8 +2,8 @@
  * React entry point.
  *
  * ```ts
- * import { GrokBotMark, useGrokBotAvatar, AVATAR_PRESETS } from "avatar-grok-design";
- * import "avatar-grok-design/style.css";
+ * import { GrokBotMark, useGrokBotAvatar, AVATAR_PRESETS } from "blobmark";
+ * import "blobmark/style.css";
  * ```
  */
 export * from "./avatar/index.js";

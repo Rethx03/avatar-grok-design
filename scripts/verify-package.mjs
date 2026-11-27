@@ -26,7 +26,7 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const work = join(root, ".package-check");
 const consumer = join(work, "consumer");
-const pkgName = "avatar-grok-design";
+const pkgName = "blobmark";
 const npm = process.platform === "win32" ? "npm.cmd" : "npm";
 const npmCli = process.env.npm_execpath;
 

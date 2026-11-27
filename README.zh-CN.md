@@ -1,16 +1,16 @@
-# Avatar Grok Design
+# Blobmark
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-这是一个 Grok Bot 标志的交互式动作研究项目，同时打包为 npm 库。包内直接提供
-现成的形象预设、外观配置和行为动作，别的项目只要安装并引入这个包，就能渲染出
-完整的动态标志。
+Blobmark 是一个从 Grok Bot 标志动作研究中诞生的动态代理标志，同时也是 npm 库。
+包内直接提供现成的形象预设、外观配置和行为动作，别的项目只要安装并引入这个包，
+就能渲染出完整的动态标志。
 
 仓库本身还包含用于设计和检查每种形状、颜色与状态的交互控制界面。
 
 ## 截图
 
-![Avatar Grok Design 桌面界面](docs/screenshots/desktop.png)
+![Blobmark 桌面界面](docs/screenshots/desktop.png)
 
 ## 功能
 
@@ -39,20 +39,20 @@
 
 ```bash
 # 从本地仓库安装
-npm install ../avatar-grok-design
+npm install ../blobmark
 
 # 从打包好的 tarball 安装（无需访问 registry）
-npm pack                # 生成 avatar-grok-design-0.2.0.tgz
-npm install ./avatar-grok-design-0.2.0.tgz
+npm pack                # 生成 blobmark-0.2.0.tgz
+npm install ./blobmark-0.2.0.tgz
 
 # 发布到 registry 之后
-npm install avatar-grok-design
+npm install blobmark
 ```
 
 样式表随包发布，需要在应用里引入一次：
 
 ```ts
-import "avatar-grok-design/style.css";
+import "blobmark/style.css";
 ```
 
 ### React 用法
@@ -63,8 +63,8 @@ import {
   createAvatarConfig,
   useGrokBotAvatar,
   type AgentFacts,
-} from "avatar-grok-design";
-import "avatar-grok-design/style.css";
+} from "blobmark";
+import "blobmark/style.css";
 
 export function AgentAvatar({ facts }: { facts: AgentFacts }) {
   const avatar = useGrokBotAvatar({ preset: "mint", size: 160, facts });
@@ -83,7 +83,7 @@ export function AgentAvatar({ facts }: { facts: AgentFacts }) {
 不使用 Hook 时，组件可以完全受控：
 
 ```tsx
-import { GrokBotMark, createAvatarConfig } from "avatar-grok-design";
+import { GrokBotMark, createAvatarConfig } from "blobmark";
 
 const config = createAvatarConfig({ preset: "ghost", size: 96 });
 
@@ -111,7 +111,7 @@ import {
   createAvatarConfig,
   listAvatarPresets,
   type AvatarConfig,
-} from "avatar-grok-design";
+} from "blobmark";
 
 const presetIds = Object.keys(AVATAR_PRESETS);
 // classic、midnight、ember、mint、neon、ghost、cookie、starlight、sunset、brand
@@ -135,7 +135,7 @@ const config: AvatarConfig = createAvatarConfig({
 动作开始前的状态，因此代理驱动的状态不会丢失。
 
 ```ts
-import { AVATAR_ACTIONS, actionDurationMs, resolveAvatarAction } from "avatar-grok-design";
+import { AVATAR_ACTIONS, actionDurationMs, resolveAvatarAction } from "blobmark";
 
 // greet、nod、celebrate、spin、think、search、code、success、failure、
 // sleep、wake、alert、dance、listen
@@ -150,7 +150,7 @@ avatar.stop(); // 取消并回到静止状态
 非 React 环境可以直接使用同一个调度器：
 
 ```ts
-import { createAvatarActionRunner } from "avatar-grok-design/vanilla";
+import { createAvatarActionRunner } from "blobmark/vanilla";
 
 const runner = createAvatarActionRunner({
   getBaseState: () => mark.config.state,
@@ -168,7 +168,7 @@ runner.play("celebrate");
 推导出的状态。
 
 ```ts
-import { deriveMarkState } from "avatar-grok-design";
+import { deriveMarkState } from "blobmark";
 
 const state = deriveMarkState(agentFacts, Date.now(), surfaceFacts);
 ```
@@ -179,8 +179,8 @@ const state = deriveMarkState(agentFacts, Date.now(), surfaceFacts);
 Angular、原生 HTML 或浏览器扩展。
 
 ```ts
-import { mountGrokBotMark } from "avatar-grok-design/vanilla";
-import "avatar-grok-design/style.css";
+import { mountGrokBotMark } from "blobmark/vanilla";
+import "blobmark/style.css";
 
 const mark = mountGrokBotMark("#stage", {
   preset: "ember",
@@ -209,16 +209,16 @@ import {
   createMarkEngine,
   getShapeGeometry,
   STATE_DEFINITIONS,
-} from "avatar-grok-design/vanilla";
+} from "blobmark/vanilla";
 ```
 
 ### 包的导出
 
 | 引入路径                       | 内容                                                     |
 | ------------------------------ | -------------------------------------------------------- |
-| `avatar-grok-design`           | React 组件、Hook、预设、动作、目录数据和引擎原语         |
-| `avatar-grok-design/vanilla`   | DOM 挂载、预设、动作、目录数据、引擎（不含 React）       |
-| `avatar-grok-design/style.css` | 组件样式表                                               |
+| `blobmark`           | React 组件、Hook、预设、动作、目录数据和引擎原语         |
+| `blobmark/vanilla`   | DOM 挂载、预设、动作、目录数据、引擎（不含 React）       |
+| `blobmark/style.css` | 组件样式表                                               |
 
 构建自定义界面所需的目录数据都以值的形式导出：`SHAPE_OPTIONS`（28）、
 `COLOR_OPTIONS`（11 + 色值）、`MARK_STATE_GROUPS`（59）、`STATE_DEFINITIONS`、
@@ -265,7 +265,7 @@ Vite 会在 `http://127.0.0.1:4173` 启动演示界面。
 dist/
 ├─ index.js / index.cjs        React 入口
 ├─ vanilla.js / vanilla.cjs    无 React 入口
-├─ avatar.css                  组件样式表（avatar-grok-design/style.css）
+├─ avatar.css                  组件样式表（blobmark/style.css）
 └─ types/                      两个入口的类型声明
 ```
 

@@ -5,8 +5,8 @@
  * catalogs and presets without pulling React into the bundle.
  *
  * ```ts
- * import { mountGrokBotMark, AVATAR_PRESETS } from "avatar-grok-design/vanilla";
- * import "avatar-grok-design/style.css";
+ * import { mountGrokBotMark, AVATAR_PRESETS } from "blobmark/vanilla";
+ * import "blobmark/style.css";
  * ```
  */
 

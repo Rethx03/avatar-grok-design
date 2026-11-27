@@ -2,7 +2,7 @@
  * Component styles for the Grok Bot mark.
  * Import this file once in the host application:
  *
- *   import "avatar-grok-design/style.css";
+ *   import "blobmark/style.css";
  *
  * The mark itself renders inline SVG inside a sized host element; these rules
  * keep the host square and let the SVG fill it without leaking app styles.

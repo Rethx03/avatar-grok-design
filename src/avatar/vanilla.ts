@@ -60,8 +60,8 @@ export interface MountedGrokBotMark {
  * Mounts a Grok Bot mark into any DOM element without React.
  *
  * ```ts
- * import { mountGrokBotMark } from "avatar-grok-design/vanilla";
- * import "avatar-grok-design/style.css";
+ * import { mountGrokBotMark } from "blobmark/vanilla";
+ * import "blobmark/style.css";
  *
  * const mark = mountGrokBotMark("#stage", { preset: "ghost", size: 160 });
  * mark.play("greet");

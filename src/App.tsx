@@ -356,7 +356,7 @@ export default function App() {
       </section>
 
       <footer className="footer">
-        <span>avatar-grok-design · v0.1</span>
+        <span>blobmark · v0.2.0</span>
       </footer>
     </main>
   );

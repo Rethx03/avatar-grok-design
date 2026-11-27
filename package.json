@@ -1,11 +1,12 @@
 {
-  "name": "avatar-grok-design",
+  "name": "blobmark",
   "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Grok Bot animated mark: React and framework-free components with 28 body shapes, 11 ink colors, 59 motion states, ready-made presets and behaviour actions.",
+  "description": "Blobmark: animated agent mark with React and framework-free components, 28 body shapes, 11 ink colors, 59 motion states, ready-made presets and behaviour actions.",
   "license": "UNLICENSED",
   "keywords": [
+    "blobmark",
     "grok",
     "avatar",
     "mark",

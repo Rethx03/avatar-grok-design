@@ -9,7 +9,7 @@ import { join } from "node:path";
  *   1. the standalone engine ships as a hand-written `.d.ts`, which `tsc` never
  *      copies, so it is placed next to the declarations that import it;
  *   2. the component stylesheet is copied as `dist/avatar.css` (the package
- *      exposes it as `avatar-grok-design/style.css`).
+ *      exposes it as `blobmark/style.css`).
  */
 
 const root = process.cwd();
