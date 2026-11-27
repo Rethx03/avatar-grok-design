@@ -36,7 +36,7 @@ const step = (
  * Ready-made behaviour actions.
  *
  * Each action is a short sequence of motion states with timing, which the
- * action runner (or the `useGrokBotAvatar` hook) plays back on top of the
+ * action runner (or the `useBlobMark` hook) plays back on top of the
  * regular agent-driven state.
  */
 export const AVATAR_ACTIONS = {

@@ -1,4 +1,4 @@
-# Grok Bot Mark 动画引擎研究笔记
+# Blobmark 动画引擎研究笔记
 
 > 行号说明：文中 `mark-engine.js:NNNN` 的行号以当前工作区文件为准。
 > 图形与动作的具体算法见 [animation-engine-internals.zh-CN.md](animation-engine-internals.zh-CN.md)。
@@ -14,7 +14,7 @@
    - 实际渲染：`App.tsx` → `MarkCanvas.tsx` → `markEngine.ts` → `src/engine/mark-engine.js`
      （289.9 KB / 10,561 行 / gzip 78.5 KB，压缩打包产物风格，数据占约 32%）。
    - 另一套是可读的"行为重建"：`motionEngine.ts` + `reconstruction/*`，导出为
-     `BehavioralGrokBotMark` / `ApproximateGrokBotMark`，**App 没有使用它**，只有测试引用。
+     `SvgBlobMark`，**App 没有使用它**，只有测试引用。
 2. **引擎是数据驱动的**：37 个动作片段（clip）、59 个符号状态、28 种身体、9 种眼型、
    13 种 morph 装饰、3 种 poke（其中 9 片段 / 6 状态 / 2 身体是 lab 扩展）。
    状态表与片段名和可读重建版基本一致（lab 新增项除外），但片段的
@@ -42,12 +42,12 @@ App.tsx
               ├─ renderMarkScene()    → frame + appearance → SVG 描述树
               └─ 内部 attach/RAF/指针/尺寸/可见性
 
-GrokBotMark.tsx + motionEngine.ts + reconstruction/*   ← 可读重建版（App 未使用）
- └─ index.ts 导出为 BehavioralGrokBotMark / ApproximateGrokBotMark
+SvgMark.tsx + motionEngine.ts + reconstruction/*   ← 可读重建版（App 未使用）
+ └─ index.ts 导出为 SvgBlobMark
 ```
 
-- `src/avatar/index.ts:1` 把 **`GrokBotMark` 指向 `MarkCanvas`**（真实引擎），
-  重建版被改名为 `BehavioralGrokBotMark`（`:3`）和 `ApproximateGrokBotMark`（`:4`）。
+- `src/avatar/index.ts:11` 把 **`BlobMark` 指向 `MarkCanvas`**（真实引擎），
+  重建版导出为 `SvgBlobMark`（`index.ts:8`）。
 - `App.tsx:7` 仍然从 `animationClips.ts`（重建版的状态表）取 `STATE_DEFINITIONS`，
   仅用于底部显示"clip"标签，**不是运行时真实播放的 clip**（引擎用洗牌袋抽片段）。
 - `MarkCanvas.tsx:13` 只以 `import type` 引用重建版的 props/handle 类型，运行时不加载。
@@ -343,7 +343,7 @@ x += v * dt
 
 - 真实引擎用 `frame()` 输出 `body/zoom/offset/squash/quat/eyes/morph/bodies`，
   由投影层决定 SVG；重建版直接输出扁平的 `MarkVisualState`，由 React 每帧重渲染整棵 SVG
-  （`GrokBotMark.tsx:630`），没有差分。
+  （`SvgMark.tsx:630`），没有差分。
 - 真实引擎的眼睛是"贴合身体表面的 capsule 投影"；重建版是椭圆 + 少量旋转/位移近似。
 
 ### 8.3 一个确定的 bug：morph 暂停后冻死
@@ -398,7 +398,7 @@ else if (this.#morphPaused) {
 | 同文 "blocked 保持 120 秒后进入 drowsy" | 正确（`ja = 120`） |
 | README "Evidence-backed 1:1 reconstruction"（`package.json:6`） | 状态表 1:1，动作曲线/时长并非 1:1（17/28 片段时长不同） |
 | README "26 body shapes / 53 states" | 正确 |
-| README 组件示例 `import { GrokBotMark }` | 解析到 `MarkCanvas`（真实引擎）；重建版需显式引 `BehavioralGrokBotMark` |
+| README 组件示例 `import { BlobMark }` | 解析到 `MarkCanvas`（真实引擎）；重建版需显式引 `SvgBlobMark` |
 | `docs/mark-engine.zh-CN.md:3` "引擎入口位于 mark-engine.js" | 正确，但同文多处数值描述的是重建版而非该文件 |
 
 另外：`App.tsx:177` 的 "clip" 标签取 `definition.clips[0]`，是**静态首选片段**，
@@ -449,7 +449,7 @@ npm run dev          # http://127.0.0.1:4173
 # ?paused=1 冻结在首帧，便于比对静态姿态
 ```
 
-- 页面上每个 mark 的宿主 `<span class="grok-bot-mark">` 带 `data-grok-state`；
+- 页面上每个 mark 的宿主 `<span class="blob-mark">` 带 `data-mark-state`；
   SVG 的 `id` 前缀来自 React `useId`（`MarkCanvas.tsx:24`），便于在 DevTools 里定位。
 - 想临时看骨架：把 `MarkCanvas` 的 `size` 调大、或在 `attach` 后直接调用
   `engine.poke("nod")`（类型未暴露，运行时可用）。

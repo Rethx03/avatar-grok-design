@@ -1,4 +1,4 @@
-# Grok Bot Mark 引擎架构
+# Blobmark 引擎架构
 
 本文描述当前独立 Mark 引擎的运行结构。引擎入口位于
 [`mark-engine.js`](../src/engine/mark-engine.js)，React 适配位于

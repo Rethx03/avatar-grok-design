@@ -12,7 +12,7 @@ import {
   STATE_DEFINITIONS,
   type BotColor,
   type BotShape,
-  type GrokBotMarkHandle,
+  type BlobMarkHandle,
   type MarkState,
 } from "./index.js";
 import {
@@ -67,7 +67,7 @@ export default function App() {
   const [maxFrameRate, setMaxFrameRate] = useState<30 | 60>(60);
   const [reducedMotion, setReducedMotion] = useState(initialReducedMotion);
   const [activeGroup, setActiveGroup] = useState(0);
-  const markRef = useRef<GrokBotMarkHandle>(null);
+  const markRef = useRef<BlobMarkHandle>(null);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -108,7 +108,7 @@ export default function App() {
       <header className="topbar">
         <div className="brand-lockup">
           <div>
-            <h1>Grok Bot Mark</h1>
+            <h1>Blobmark</h1>
           </div>
         </div>
         <div className="topbar-actions">

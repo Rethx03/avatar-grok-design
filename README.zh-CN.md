@@ -2,9 +2,8 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-Blobmark 是一个从 Grok Bot 标志动作研究中诞生的动态代理标志，同时也是 npm 库。
-包内直接提供现成的形象预设、外观配置和行为动作，别的项目只要安装并引入这个包，
-就能渲染出完整的动态标志。
+Blobmark 是一个动态代理标志，同时也打包为 npm 库。包内直接提供现成的形象预设、
+外观配置和行为动作，别的项目只要安装并引入这个包，就能渲染出完整的动态标志。
 
 仓库本身还包含用于设计和检查每种形状、颜色与状态的交互控制界面。
 
@@ -59,19 +58,19 @@ import "blobmark/style.css";
 
 ```tsx
 import {
-  GrokBotMark,
+  BlobMark,
   createAvatarConfig,
-  useGrokBotAvatar,
+  useBlobMark,
   type AgentFacts,
 } from "blobmark";
 import "blobmark/style.css";
 
 export function AgentAvatar({ facts }: { facts: AgentFacts }) {
-  const avatar = useGrokBotAvatar({ preset: "mint", size: 160, facts });
+  const avatar = useBlobMark({ preset: "mint", size: 160, facts });
 
   return (
     <div>
-      <GrokBotMark {...avatar.props} ref={avatar.ref} />
+      <BlobMark {...avatar.props} ref={avatar.ref} />
       <button onClick={() => avatar.play("celebrate")}>庆祝</button>
       <button onClick={() => avatar.poke("bounce")}>戳一下</button>
       <button onClick={() => avatar.setState("thinking")}>思考</button>
@@ -83,17 +82,17 @@ export function AgentAvatar({ facts }: { facts: AgentFacts }) {
 不使用 Hook 时，组件可以完全受控：
 
 ```tsx
-import { GrokBotMark, createAvatarConfig } from "blobmark";
+import { BlobMark, createAvatarConfig } from "blobmark";
 
 const config = createAvatarConfig({ preset: "ghost", size: 96 });
 
-<GrokBotMark {...config} state="listening" followPointer />;
+<BlobMark {...config} state="listening" followPointer />;
 ```
 
 通过 `ref` 可以调用底层动作：
 
 ```tsx
-const mark = useRef<GrokBotMarkHandle>(null);
+const mark = useRef<BlobMarkHandle>(null);
 
 mark.current?.poke("bounce");
 mark.current?.poke("spin", 2);
@@ -123,7 +122,7 @@ const config: AvatarConfig = createAvatarConfig({
 });
 
 // config 的每个键都与组件属性一一对应：
-<GrokBotMark {...config} />;
+<BlobMark {...config} />;
 ```
 
 可配置项：`state`、`shape`、`color`、`colorHex`、`size`、`paused`、
@@ -142,7 +141,7 @@ import { AVATAR_ACTIONS, actionDurationMs, resolveAvatarAction } from "blobmark"
 const action = resolveAvatarAction("success");
 actionDurationMs(action); // 总播放时长（毫秒）
 
-const avatar = useGrokBotAvatar({ preset: "classic" });
+const avatar = useBlobMark({ preset: "classic" });
 avatar.play("success"); // 播放 finished → happy → idle
 avatar.stop(); // 取消并回到静止状态
 ```
@@ -179,10 +178,10 @@ const state = deriveMarkState(agentFacts, Date.now(), surfaceFacts);
 Angular、原生 HTML 或浏览器扩展。
 
 ```ts
-import { mountGrokBotMark } from "blobmark/vanilla";
+import { mountBlobMark } from "blobmark/vanilla";
 import "blobmark/style.css";
 
-const mark = mountGrokBotMark("#stage", {
+const mark = mountBlobMark("#stage", {
   preset: "ember",
   size: 200,
   followPointer: true,
@@ -226,11 +225,11 @@ import {
 
 ### 服务端渲染
 
-`GrokBotMark` 只在浏览器里运行真实引擎；服务端渲染时会输出带尺寸的宿主元素，在
+`BlobMark` 只在浏览器里运行真实引擎；服务端渲染时会输出带尺寸的宿主元素，在
 客户端水合后开始绘制。如果需要服务端直接输出完整 SVG，请使用
-`SvgGrokBotMark`（行为回退渲染器），它在服务端就能生成完整的 SVG 标记。
+`SvgBlobMark`（行为回退渲染器），它在服务端就能生成完整的 SVG 标记。
 
-在 React Server Component 框架里，请把 `GrokBotMark` 放在客户端组件中使用；预设、
+在 React Server Component 框架里，请把 `BlobMark` 放在客户端组件中使用；预设、
 动作、目录数据和 `deriveMarkState` 等纯数据导出不依赖浏览器，可以在服务端直接使用。
 
 ## 本地运行演示
@@ -282,7 +281,7 @@ src/
 │  ├─ types.ts                形状、颜色、状态和帧类型
 │  ├─ presets.ts              命名形象预设与解析后的配置
 │  ├─ actions.ts              行为动作目录与执行器
-│  ├─ useGrokBotAvatar.ts     状态、预设、动作的 React Hook
+│  ├─ useBlobMark.ts     状态、预设、动作的 React Hook
 │  ├─ vanilla.ts              无 React 的 DOM 挂载控制器
 │  ├─ avatar.css              组件样式表
 │  ├─ stateModel.ts           代理事实到符号化标志状态的推导
@@ -293,7 +292,7 @@ src/
 │  ├─ MarkCanvas.tsx          React 生命周期与浏览器绑定
 │  ├─ reconstruction/         备用渲染器使用的动作原语
 │  ├─ lab/                    新形象、引擎数据说明与测试
-│  └─ GrokBotMark.tsx         备用界面与行为渲染器
+│  └─ SvgMark.tsx         备用界面与行为渲染器
 ├─ engine/                    独立 Mark 引擎运行时与类型
 ├─ App.tsx                    交互式演示控制界面
 ├─ i18n.ts                    中英文演示文案

@@ -3,7 +3,7 @@ import * as vanilla from "./vanilla.js";
 
 describe("vanilla entry point", () => {
   it("exports the React-free API", () => {
-    expect(typeof vanilla.mountGrokBotMark).toBe("function");
+    expect(typeof vanilla.mountBlobMark).toBe("function");
     expect(typeof vanilla.createMarkEngine).toBe("function");
     expect(typeof vanilla.createAvatarActionRunner).toBe("function");
     expect(typeof vanilla.createAvatarConfig).toBe("function");
@@ -14,12 +14,12 @@ describe("vanilla entry point", () => {
   });
 
   it("stays free of React exports", () => {
-    expect("useGrokBotAvatar" in vanilla).toBe(false);
-    expect("GrokBotMark" in vanilla).toBe(false);
-    expect("SvgGrokBotMark" in vanilla).toBe(false);
+    expect("useBlobMark" in vanilla).toBe(false);
+    expect("BlobMark" in vanilla).toBe(false);
+    expect("SvgBlobMark" in vanilla).toBe(false);
   });
 
   it("fails with a clear message when there is no DOM", () => {
-    expect(() => vanilla.mountGrokBotMark("#missing")).toThrow(/requires a DOM/);
+    expect(() => vanilla.mountBlobMark("#missing")).toThrow(/requires a DOM/);
   });
 });

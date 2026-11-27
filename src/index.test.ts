@@ -3,12 +3,12 @@ import * as api from "./index.js";
 
 describe("package surface", () => {
   it("exports components, hook, catalogs, presets, and actions", () => {
-    expect(api.GrokBotMark).toBeDefined();
-    expect(api.MarkCanvas).toBe(api.GrokBotMark);
-    expect(api.SvgGrokBotMark).toBeDefined();
-    expect(api.BehavioralGrokBotMark).toBe(api.SvgGrokBotMark);
-    expect(typeof api.useGrokBotAvatar).toBe("function");
-    expect(typeof api.mountGrokBotMark).toBe("function");
+    expect(api.BlobMark).toBeDefined();
+    expect(api.MarkCanvas).toBe(api.BlobMark);
+    expect(api.SvgMark).toBeDefined();
+    expect(api.SvgBlobMark).toBe(api.SvgMark);
+    expect(typeof api.useBlobMark).toBe("function");
+    expect(typeof api.mountBlobMark).toBe("function");
     expect(typeof api.createAvatarConfig).toBe("function");
     expect(typeof api.createAvatarActionRunner).toBe("function");
   });

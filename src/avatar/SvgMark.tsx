@@ -63,7 +63,7 @@ const normalizedPointer = (
   };
 };
 
-export interface GrokBotMarkProps {
+export interface MarkProps {
   readonly state: MarkState;
   readonly shape?: BotShape;
   readonly color?: BotColor;
@@ -79,7 +79,7 @@ export interface GrokBotMarkProps {
   readonly onFrame?: (frame: MarkVisualState) => void;
 }
 
-export interface GrokBotMarkHandle {
+export interface BlobMarkHandle {
   poke(kind: "spin" | "bounce", turns?: number): void;
   restart(): void;
 }
@@ -403,7 +403,7 @@ const MarkSvg = ({
 
   return (
     <svg
-      aria-label={ariaLabel ?? `Grok Bot mark, ${frame.state}`}
+      aria-label={ariaLabel ?? `Blobmark avatar, ${frame.state}`}
       className="mark-svg"
       height={size}
       role="img"
@@ -503,8 +503,8 @@ const MarkSvg = ({
   );
 };
 
-export const GrokBotMark = forwardRef<GrokBotMarkHandle, GrokBotMarkProps>(
-  function GrokBotMark(
+export const SvgMark = forwardRef<BlobMarkHandle, MarkProps>(
+  function SvgMark(
     {
       state,
       shape = "blob",
@@ -638,9 +638,9 @@ export const GrokBotMark = forwardRef<GrokBotMarkHandle, GrokBotMarkProps>(
 
     return (
       <span
-        aria-label={ariaLabel ?? `Grok Bot mark, ${state}`}
-        className={["grok-bot-mark", className].filter(Boolean).join(" ")}
-        data-grok-state={state}
+        aria-label={ariaLabel ?? `Blobmark avatar, ${state}`}
+        className={["blob-mark", className].filter(Boolean).join(" ")}
+        data-mark-state={state}
         data-paused={frame?.isPaused === true ? "true" : undefined}
         onClick={handleClick}
         onPointerLeave={handlePointerLeave}

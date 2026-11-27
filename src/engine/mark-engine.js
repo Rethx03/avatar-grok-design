@@ -9310,7 +9310,7 @@ function rm(e) {
   }
   return t;
 }
-function im(e, t, n = `grok-sphere`, r = e.size) {
+function im(e, t, n = `blob-sphere`, r = e.size) {
   let i = [],
     a = [],
     o = Oa(t);

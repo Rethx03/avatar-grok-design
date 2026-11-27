@@ -18,8 +18,8 @@ import {
 import type { BotColor, BotShape, MarkState } from "./types.js";
 
 const IDLE_SETTLE_MS = 1_400;
-const HOST_CLASS = "grok-bot-mark grok-bot-mark--canvas";
-const CANVAS_CLASS = "grok-bot-mark__canvas";
+const HOST_CLASS = "blob-mark blob-mark--canvas";
+const CANVAS_CLASS = "blob-mark__canvas";
 
 const prefersReducedMotion = (): boolean =>
   typeof window !== "undefined" &&
@@ -34,7 +34,7 @@ export interface MountAvatarOptions extends AvatarConfigInput {
   readonly className?: string;
 }
 
-export interface MountedGrokBotMark {
+export interface MountedBlobMark {
   /** Host element that was appended to the target. */
   readonly element: HTMLSpanElement;
   /** The underlying mark engine, for advanced control. */
@@ -57,30 +57,30 @@ export interface MountedGrokBotMark {
 }
 
 /**
- * Mounts a Grok Bot mark into any DOM element without React.
+ * Mounts a Blobmark avatar into any DOM element without React.
  *
  * ```ts
- * import { mountGrokBotMark } from "blobmark/vanilla";
+ * import { mountBlobMark } from "blobmark/vanilla";
  * import "blobmark/style.css";
  *
- * const mark = mountGrokBotMark("#stage", { preset: "ghost", size: 160 });
+ * const mark = mountBlobMark("#stage", { preset: "ghost", size: 160 });
  * mark.play("greet");
  * ```
  */
-export const mountGrokBotMark = (
+export const mountBlobMark = (
   target: HTMLElement | string,
   input: MountAvatarOptions = {},
-): MountedGrokBotMark => {
+): MountedBlobMark => {
   if (typeof document === "undefined") {
     throw new Error(
-      "mountGrokBotMark requires a DOM; render the React component on the server instead.",
+      "mountBlobMark requires a DOM; render the React component on the server instead.",
     );
   }
 
   const host =
     typeof target === "string" ? document.querySelector<HTMLElement>(target) : target;
   if (host === null) {
-    throw new Error(`mountGrokBotMark: no element matches "${String(target)}".`);
+    throw new Error(`mountBlobMark: no element matches "${String(target)}".`);
   }
 
   let config = createAvatarConfig({
@@ -88,7 +88,7 @@ export const mountGrokBotMark = (
     ...input,
   });
   const id = `motion-vanilla-${++mountCounter}`;
-  const ariaLabel = (): string => input.ariaLabel ?? `Grok Bot mark, ${config.state}`;
+  const ariaLabel = (): string => input.ariaLabel ?? `Blobmark avatar, ${config.state}`;
 
   const element = document.createElement("span");
   element.className = [HOST_CLASS, input.className].filter(Boolean).join(" ");
@@ -152,14 +152,14 @@ export const mountGrokBotMark = (
   const applyConfig = (patch: Partial<AvatarConfig>): void => {
     config = { ...config, ...patch };
     engine.update(updateMarkEngine(engineOptions()));
-    element.dataset.grokState = config.state;
+    element.dataset.markState = config.state;
     element.setAttribute("aria-label", ariaLabel());
     element.style.width = `${config.size}px`;
     element.style.height = `${config.size}px`;
   };
 
   // Apply the resolved config once so the DOM reflects the preset (including
-  // `data-grok-state`) before the first frame.
+  // `data-mark-state`) before the first frame.
   applyConfig({});
 
   const runner: AvatarActionRunner = createAvatarActionRunner({

@@ -5,16 +5,16 @@
  * catalogs and presets without pulling React into the bundle.
  *
  * ```ts
- * import { mountGrokBotMark, AVATAR_PRESETS } from "blobmark/vanilla";
+ * import { mountBlobMark, AVATAR_PRESETS } from "blobmark/vanilla";
  * import "blobmark/style.css";
  * ```
  */
 
 // ---- Vanilla DOM mounting --------------------------------------------------
-export { mountGrokBotMark } from "./avatar/vanilla.js";
+export { mountBlobMark } from "./avatar/vanilla.js";
 export type {
   MountAvatarOptions,
-  MountedGrokBotMark,
+  MountedBlobMark,
 } from "./avatar/vanilla.js";
 
 // ---- Presets and configuration --------------------------------------------

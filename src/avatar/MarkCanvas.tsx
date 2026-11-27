@@ -10,12 +10,12 @@ import {
   updateMarkEngine,
   type MarkEngineOptions,
 } from "./markEngine.js";
-import type { GrokBotMarkHandle, GrokBotMarkProps } from "./GrokBotMark.js";
+import type { BlobMarkHandle, MarkProps } from "./SvgMark.js";
 
 const IDLE_SETTLE_MS = 1_400;
 
 export interface MarkCanvasProps
-  extends Omit<GrokBotMarkProps, "onFrame" | "settleIdle"> {
+  extends Omit<MarkProps, "onFrame" | "settleIdle"> {
   readonly settleIdle?: boolean;
   readonly ariaLabel?: string;
   readonly colorHex?: string;
@@ -25,7 +25,7 @@ const makeId = (rawId: string): string =>
   `motion-${rawId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
 
 export const MarkCanvas = forwardRef<
-  GrokBotMarkHandle,
+  BlobMarkHandle,
   MarkCanvasProps
 >(function MarkCanvas(
   {
@@ -156,11 +156,11 @@ export const MarkCanvas = forwardRef<
 
   return (
     <span
-      aria-label={ariaLabel ?? `Grok Bot mark, ${state}`}
-      className={["grok-bot-mark", "grok-bot-mark--canvas", className]
+      aria-label={ariaLabel ?? `Blobmark avatar, ${state}`}
+      className={["blob-mark", "blob-mark--canvas", className]
         .filter(Boolean)
         .join(" ")}
-      data-grok-state={state}
+      data-mark-state={state}
       onClick={() => {
         wake();
         engineRef.current?.poke("bounce");
@@ -170,7 +170,7 @@ export const MarkCanvas = forwardRef<
       role="img"
       style={{ height: size, width: size }}
     >
-      <span aria-hidden="true" className="grok-bot-mark__canvas" ref={canvasRef} />
+      <span aria-hidden="true" className="blob-mark__canvas" ref={canvasRef} />
     </span>
   );
 });

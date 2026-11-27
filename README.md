@@ -2,10 +2,9 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-Blobmark is an animated agent mark and npm library, grown from an interactive
-motion study of the Grok Bot mark. The package ships ready-made looks,
-appearance configuration, and behaviour actions, so another project can render
-the animated mark with a single import.
+Blobmark is an animated agent avatar and npm library. The package ships
+ready-made looks, appearance configuration, and behaviour actions, so another
+project can render the moving mark with a single import.
 
 The repository also contains the interactive control surface used to design and
 inspect every shape, color, and state.
@@ -61,19 +60,19 @@ import "blobmark/style.css";
 
 ```tsx
 import {
-  GrokBotMark,
+  BlobMark,
   createAvatarConfig,
-  useGrokBotAvatar,
+  useBlobMark,
   type AgentFacts,
 } from "blobmark";
 import "blobmark/style.css";
 
 export function AgentAvatar({ facts }: { facts: AgentFacts }) {
-  const avatar = useGrokBotAvatar({ preset: "mint", size: 160, facts });
+  const avatar = useBlobMark({ preset: "mint", size: 160, facts });
 
   return (
     <div>
-      <GrokBotMark {...avatar.props} ref={avatar.ref} />
+      <BlobMark {...avatar.props} ref={avatar.ref} />
       <button onClick={() => avatar.play("celebrate")}>Celebrate</button>
       <button onClick={() => avatar.poke("bounce")}>Poke</button>
       <button onClick={() => avatar.setState("thinking")}>Think</button>
@@ -85,17 +84,17 @@ export function AgentAvatar({ facts }: { facts: AgentFacts }) {
 Without the hook, the component is fully controlled:
 
 ```tsx
-import { GrokBotMark, createAvatarConfig } from "blobmark";
+import { BlobMark, createAvatarConfig } from "blobmark";
 
 const config = createAvatarConfig({ preset: "ghost", size: 96 });
 
-<GrokBotMark {...config} state="listening" followPointer />;
+<BlobMark {...config} state="listening" followPointer />;
 ```
 
 The imperative handle exposes the low-level accents:
 
 ```tsx
-const mark = useRef<GrokBotMarkHandle>(null);
+const mark = useRef<BlobMarkHandle>(null);
 
 mark.current?.poke("bounce");
 mark.current?.poke("spin", 2);
@@ -125,7 +124,7 @@ const config: AvatarConfig = createAvatarConfig({
 });
 
 // Every key maps 1:1 onto a component prop:
-<GrokBotMark {...config} />;
+<BlobMark {...config} />;
 ```
 
 Available configuration: `state`, `shape`, `color`, `colorHex`, `size`,
@@ -146,7 +145,7 @@ import { AVATAR_ACTIONS, actionDurationMs, resolveAvatarAction } from "blobmark"
 const action = resolveAvatarAction("success");
 actionDurationMs(action); // total playback time in ms
 
-const avatar = useGrokBotAvatar({ preset: "classic" });
+const avatar = useBlobMark({ preset: "classic" });
 avatar.play("success"); // plays finished → happy → idle
 avatar.stop(); // cancels and restores the resting state
 ```
@@ -184,10 +183,10 @@ element. It is suitable for Vue, Svelte, Angular, plain HTML, or a browser
 extension.
 
 ```ts
-import { mountGrokBotMark } from "blobmark/vanilla";
+import { mountBlobMark } from "blobmark/vanilla";
 import "blobmark/style.css";
 
-const mark = mountGrokBotMark("#stage", {
+const mark = mountBlobMark("#stage", {
   preset: "ember",
   size: 200,
   followPointer: true,
@@ -233,12 +232,12 @@ The catalogs are exported as values for building your own UI:
 
 ### Server rendering
 
-`GrokBotMark` paints the real engine only in the browser; on the server it
+`BlobMark` paints the real engine only in the browser; on the server it
 renders the sized host element and hydrates on the client. For markup-only or
-static SVG rendering, `SvgGrokBotMark` (the behavioural fallback renderer)
+static SVG rendering, `SvgBlobMark` (the behavioural fallback renderer)
 renders a complete SVG on the server as well.
 
-In React Server Component frameworks, use `GrokBotMark` inside a client
+In React Server Component frameworks, use `BlobMark` inside a client
 component. The data exports (presets, actions, catalogs, `deriveMarkState`) have
 no browser dependency and are safe to use on the server.
 
@@ -292,7 +291,7 @@ src/
 │  ├─ types.ts                shapes, colors, states, and frame types
 │  ├─ presets.ts              named looks and resolved configuration
 │  ├─ actions.ts              behaviour action catalog and runner
-│  ├─ useGrokBotAvatar.ts     React hook for state, presets, and actions
+│  ├─ useBlobMark.ts     React hook for state, presets, and actions
 │  ├─ vanilla.ts              React-free DOM mount controller
 │  ├─ avatar.css              component stylesheet
 │  ├─ stateModel.ts           agent facts to symbolic mark state
@@ -303,7 +302,7 @@ src/
 │  ├─ MarkCanvas.tsx          React lifecycle and browser attachment
 │  ├─ reconstruction/         motion primitives used by the fallback renderer
 │  ├─ lab/                    new forms, engine data notes, and lab tests
-│  └─ GrokBotMark.tsx         fallback UI and behavioural renderer
+│  └─ SvgMark.tsx         fallback UI and behavioural renderer
 ├─ engine/                    standalone Mark engine runtime and typings
 ├─ App.tsx                    interactive demo control surface
 ├─ i18n.ts                    English and Chinese demo copy

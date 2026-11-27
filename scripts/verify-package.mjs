@@ -136,14 +136,14 @@ import * as api from "${pkgName}";
 import {
   AVATAR_ACTIONS,
   AVATAR_PRESETS,
-  GrokBotMark,
+  BlobMark,
   createAvatarConfig,
   deriveMarkState,
 } from "${pkgName}";
 
 const names = Object.keys(api);
-if (!names.includes("GrokBotMark")) throw new Error("GrokBotMark is not exported");
-if (typeof api.useGrokBotAvatar !== "function") throw new Error("useGrokBotAvatar is not exported");
+if (!names.includes("BlobMark")) throw new Error("BlobMark is not exported");
+if (typeof api.useBlobMark !== "function") throw new Error("useBlobMark is not exported");
 if (Object.keys(AVATAR_PRESETS).length < 5) throw new Error("presets are missing");
 if (Object.keys(AVATAR_ACTIONS).length < 5) throw new Error("actions are missing");
 
@@ -159,9 +159,9 @@ if (!styleUrl.endsWith("avatar.css")) {
 }
 
 const html = renderToStaticMarkup(
-  createElement(GrokBotMark, { ...config, state: "idle", ariaLabel: "server mark" }),
+  createElement(BlobMark, { ...config, state: "idle", ariaLabel: "server mark" }),
 );
-if (!html.includes("grok-bot-mark")) throw new Error("mark did not render");
+if (!html.includes("blob-mark")) throw new Error("mark did not render");
 if (!html.includes("width:96px")) throw new Error("size was not applied");
 
 console.log(\`  ESM ok: \${names.length} exports, SSR html \${html.length} chars\`);
@@ -172,7 +172,7 @@ console.log(\`  ESM ok: \${names.length} exports, SSR html \${html.length} chars
 writeFileSync(
   join(consumer, "cjs.cjs"),
   `const api = require("${pkgName}");
-if (typeof api.GrokBotMark !== "object") throw new Error("CJS entry has no GrokBotMark");
+if (typeof api.BlobMark !== "object") throw new Error("CJS entry has no BlobMark");
 if (typeof api.createAvatarConfig !== "function") throw new Error("CJS entry has no createAvatarConfig");
 console.log("  CJS ok: " + Object.keys(api).length + " exports");
 `,
@@ -182,10 +182,10 @@ console.log("  CJS ok: " + Object.keys(api).length + " exports");
 writeFileSync(
   join(consumer, "vanilla.mjs"),
   `import * as vanilla from "${pkgName}/vanilla";
-if (typeof vanilla.mountGrokBotMark !== "function") throw new Error("mountGrokBotMark is missing");
+if (typeof vanilla.mountBlobMark !== "function") throw new Error("mountBlobMark is missing");
 if (vanilla.AVATAR_PRESETS.classic.shape !== "blob") throw new Error("catalogs are missing");
 if (typeof vanilla.createMarkEngine !== "function") throw new Error("engine is missing");
-if ("useGrokBotAvatar" in vanilla) throw new Error("vanilla entry must stay React-free");
+if ("useBlobMark" in vanilla) throw new Error("vanilla entry must stay React-free");
 console.log("  vanilla ok: " + Object.keys(vanilla).length + " exports");
 `,
 );
@@ -218,18 +218,18 @@ writeFileSync(
   `import {
   AVATAR_ACTIONS,
   AVATAR_PRESETS,
-  GrokBotMark,
+  BlobMark,
   createAvatarConfig,
-  useGrokBotAvatar,
+  useBlobMark,
   type AvatarConfig,
   type AvatarPresetId,
   type BotShape,
-  type GrokBotMarkHandle,
+  type BlobMarkHandle,
   type MarkState,
 } from "${pkgName}";
 import {
   createAvatarActionRunner,
-  mountGrokBotMark,
+  mountBlobMark,
   type AvatarActionId,
 } from "${pkgName}/vanilla";
 
@@ -240,19 +240,19 @@ const shape: BotShape = AVATAR_PRESETS[presetId].shape;
 const state: MarkState = AVATAR_ACTIONS[actionId].steps[0].state;
 
 export const Demo = () => {
-  const avatar = useGrokBotAvatar({ preset: "mint" });
-  return <GrokBotMark {...avatar.props} ref={avatar.ref} />;
+  const avatar = useBlobMark({ preset: "mint" });
+  return <BlobMark {...avatar.props} ref={avatar.ref} />;
 };
 
 export const mount = (element: HTMLElement) =>
-  mountGrokBotMark(element, { preset: "classic" });
+  mountBlobMark(element, { preset: "classic" });
 
 export const runner = createAvatarActionRunner({
   getBaseState: () => "idle",
   setState: (next) => void next,
 });
 
-export type Handle = GrokBotMarkHandle | null;
+export type Handle = BlobMarkHandle | null;
 export const installed = { config, shape, state, runner };
 `,
 );
@@ -272,8 +272,8 @@ console.log("  types ok");
 
 heading("checking stylesheet");
 const css = readFileSync(join(installed, "dist", "avatar.css"), "utf8");
-assert(css.includes(".grok-bot-mark"), "stylesheet is missing the mark rules");
-assert(css.includes(".grok-bot-mark__canvas"), "stylesheet is missing the canvas rules");
+assert(css.includes(".blob-mark"), "stylesheet is missing the mark rules");
+assert(css.includes(".blob-mark__canvas"), "stylesheet is missing the canvas rules");
 console.log(`  avatar.css ok (${css.length} bytes)`);
 
 console.log("\n✓ package verification passed");

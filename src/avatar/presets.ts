@@ -141,7 +141,7 @@ export const resolveAvatarPreset = (id: string): AvatarPreset => {
 
 /**
  * The complete, resolved appearance and playback configuration.
- * Every key maps 1:1 onto a prop of `GrokBotMark`, so it can be spread directly.
+ * Every key maps 1:1 onto a prop of `BlobMark`, so it can be spread directly.
  */
 export interface AvatarConfig {
   readonly state: MarkState;

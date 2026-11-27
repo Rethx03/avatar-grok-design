@@ -5,7 +5,7 @@ import {
   type AvatarActionId,
   type AvatarActionRunner,
 } from "./actions.js";
-import type { GrokBotMarkHandle } from "./GrokBotMark.js";
+import type { BlobMarkHandle } from "./SvgMark.js";
 import type { MarkCanvasProps } from "./MarkCanvas.js";
 import {
   createAvatarConfig,
@@ -16,7 +16,7 @@ import { deriveMarkState } from "./stateModel.js";
 import type { AgentFacts, MarkState } from "./types.js";
 import type { RefObject } from "react";
 
-export interface UseGrokBotAvatarOptions extends AvatarConfigInput {
+export interface UseBlobMarkOptions extends AvatarConfigInput {
   /**
    * Agent facts to derive the state from. When provided, the hook follows the
    * regular `deriveMarkState` rules instead of a fixed `state`.
@@ -30,10 +30,10 @@ export interface UseGrokBotAvatarOptions extends AvatarConfigInput {
   readonly ariaLabel?: string;
 }
 
-export interface GrokBotAvatarController {
-  /** Attach to the mark: `<GrokBotMark {...avatar.props} ref={avatar.ref} />`. */
+export interface BlobMarkController {
+  /** Attach to the mark: `<BlobMark {...avatar.props} ref={avatar.ref} />`. */
   readonly props: MarkCanvasProps;
-  readonly ref: RefObject<GrokBotMarkHandle | null>;
+  readonly ref: RefObject<BlobMarkHandle | null>;
   /** The resolved configuration, including the preset values. */
   readonly config: AvatarConfig;
   readonly state: MarkState;
@@ -48,15 +48,15 @@ export interface GrokBotAvatarController {
   readonly restart: () => void;
 }
 
-const resolveInitialState = (input: UseGrokBotAvatarOptions): MarkState =>
+const resolveInitialState = (input: UseBlobMarkOptions): MarkState =>
   createAvatarConfig(input).state;
 
 /**
  * Manages the state, presets, and behaviour actions of one mark.
  *
  * ```tsx
- * const avatar = useGrokBotAvatar({ preset: "mint", facts: agentFacts });
- * return <GrokBotMark {...avatar.props} ref={avatar.ref} />;
+ * const avatar = useBlobMark({ preset: "mint", facts: agentFacts });
+ * return <BlobMark {...avatar.props} ref={avatar.ref} />;
  * ```
  *
  * State precedence, from strongest to weakest:
@@ -65,9 +65,9 @@ const resolveInitialState = (input: UseGrokBotAvatarOptions): MarkState =>
  * 3. the `state` option, re-applied whenever it changes;
  * 4. the preset entrance state, or `idle`.
  */
-export const useGrokBotAvatar = (
-  options: UseGrokBotAvatarOptions = {},
-): GrokBotAvatarController => {
+export const useBlobMark = (
+  options: UseBlobMarkOptions = {},
+): BlobMarkController => {
   const {
     className,
     ariaLabel,
@@ -98,7 +98,7 @@ export const useGrokBotAvatar = (
 
   const [state, setState] = useState<MarkState>(() => resolveInitialState(options));
   const [activeAction, setActiveAction] = useState<AvatarAction | null>(null);
-  const ref = useRef<GrokBotMarkHandle | null>(null);
+  const ref = useRef<BlobMarkHandle | null>(null);
   const stateRef = useRef(state);
   const actionRef = useRef<AvatarAction | null>(null);
   const factsRef = useRef(facts);

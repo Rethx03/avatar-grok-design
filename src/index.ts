@@ -2,7 +2,7 @@
  * React entry point.
  *
  * ```ts
- * import { GrokBotMark, useGrokBotAvatar, AVATAR_PRESETS } from "blobmark";
+ * import { BlobMark, useBlobMark, AVATAR_PRESETS } from "blobmark";
  * import "blobmark/style.css";
  * ```
  */

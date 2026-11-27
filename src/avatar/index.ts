@@ -1,26 +1,25 @@
 /**
- * Public API of the Grok Bot mark package.
+ * Public API of the Blobmark avatar package.
  *
  * The React entry point re-exports everything here, plus the presets, hooks,
  * and behaviour actions that live next to this file.
  */
 
 // ---- React components -------------------------------------------------------
-export { MarkCanvas, MarkCanvas as GrokBotMark } from "./MarkCanvas.js";
+export { MarkCanvas, MarkCanvas as BlobMark } from "./MarkCanvas.js";
 export type { MarkCanvasProps } from "./MarkCanvas.js";
 export {
-  GrokBotMark as SvgGrokBotMark,
-  GrokBotMark as BehavioralGrokBotMark,
-  GrokBotMark as ApproximateGrokBotMark,
-} from "./GrokBotMark.js";
-export type { GrokBotMarkHandle, GrokBotMarkProps } from "./GrokBotMark.js";
+  SvgMark,
+  SvgMark as SvgBlobMark,
+} from "./SvgMark.js";
+export type { BlobMarkHandle, MarkProps } from "./SvgMark.js";
 
 // ---- React hook ------------------------------------------------------------
-export { useGrokBotAvatar } from "./useGrokBotAvatar.js";
+export { useBlobMark } from "./useBlobMark.js";
 export type {
-  GrokBotAvatarController,
-  UseGrokBotAvatarOptions,
-} from "./useGrokBotAvatar.js";
+  BlobMarkController,
+  UseBlobMarkOptions,
+} from "./useBlobMark.js";
 
 // ---- Presets and configuration --------------------------------------------
 export {
@@ -60,8 +59,8 @@ export type {
 } from "./actions.js";
 
 // ---- Vanilla DOM mounting --------------------------------------------------
-export { mountGrokBotMark } from "./vanilla.js";
-export type { MountAvatarOptions, MountedGrokBotMark } from "./vanilla.js";
+export { mountBlobMark } from "./vanilla.js";
+export type { MountAvatarOptions, MountedBlobMark } from "./vanilla.js";
 
 // ---- State derivation ------------------------------------------------------
 export {

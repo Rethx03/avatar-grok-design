@@ -58,7 +58,7 @@ const EN: CopySet = {
   documentTitle: "Blobmark Motion Study",
   svgProjection: "SVG projection",
   stateDriven: "State-driven",
-  markLabel: "Grok Bot mark",
+  markLabel: "Blobmark avatar",
   language: {
     label: "Language",
     english: "English",
@@ -232,7 +232,7 @@ const ZH: CopySet = {
   documentTitle: "Blobmark 动作研究",
   svgProjection: "SVG 投影",
   stateDriven: "状态驱动",
-  markLabel: "Grok Bot 标志",
+  markLabel: "Blobmark 标志",
   language: {
     label: "语言",
     english: "英文",
