@@ -5,7 +5,7 @@
 An interactive motion study for the Grok Bot mark, built with React, TypeScript,
 and Vite.
 
-The project provides live state controls, 26 body shapes, preset and custom ink
+The project provides live state controls, 28 body shapes, preset and custom ink
 colors, animation playback settings, pointer-following behavior, and a
 standalone Mark rendering engine.
 
@@ -15,8 +15,9 @@ standalone Mark rendering engine.
 
 ## Features
 
-- 53 animation states grouped by lifecycle, reactions, morphs, product, and brand
-- 26 procedural body shapes
+- 59 animation states grouped by lifecycle, reactions, morphs, product, brand, and lab
+- 28 procedural body shapes
+- Lab: ghost/cookie bodies and sneeze/shiver/stretch/doze/pace/wink behaviours
 - 11 preset ink colors plus a custom color picker
 - State-aware clips, facial presets, morphs, and bridge transitions
 - Pointer-following gaze, blinking, squash, bob, spin, and poke effects
@@ -60,6 +61,7 @@ src/
 │  ├─ markEngine.ts          typed adapter for the standalone engine
 │  ├─ MarkCanvas.tsx         React lifecycle and browser attachment
 │  ├─ reconstruction/        motion primitives used by the fallback renderer
+│  ├─ lab/                   new forms, engine data notes, and lab tests
 │  └─ GrokBotMark.tsx        fallback UI and behavioral renderer
 ├─ engine/                   standalone Mark engine runtime
 ├─ App.tsx                   interactive control surface

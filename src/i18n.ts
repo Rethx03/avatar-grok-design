@@ -95,6 +95,7 @@ const EN: CopySet = {
     Morphs: "Morphs",
     Product: "Product",
     Brand: "Brand",
+    Lab: "Lab",
   },
   states: {
     idle: "Idle",
@@ -150,6 +151,12 @@ const EN: CopySet = {
     logo: "Logo",
     showcase: "Showcase",
     turntable: "Turntable",
+    sneeze: "Sneeze",
+    shiver: "Shiver",
+    stretch: "Stretch",
+    doze: "Doze",
+    pace: "Pace",
+    wink: "Wink",
   },
   shapes: {
     blob: "Blob",
@@ -178,6 +185,8 @@ const EN: CopySet = {
     house: "House",
     star: "Star",
     pumpkin: "Pumpkin",
+    ghost: "Ghost",
+    cookie: "Cookie",
   },
   colors: {
     black: "Black",
@@ -200,6 +209,7 @@ const EN: CopySet = {
     surprised: "Surprised",
     inspecting: "Inspecting",
     squinted: "Squinted",
+    wink: "Wink",
   },
   morphs: {
     thinking: "Thinking",
@@ -259,6 +269,7 @@ const ZH: CopySet = {
     Morphs: "形态效果",
     Product: "产品行为",
     Brand: "品牌展示",
+    Lab: "实验",
   },
   states: {
     idle: "空闲",
@@ -314,6 +325,12 @@ const ZH: CopySet = {
     logo: "标志",
     showcase: "展示",
     turntable: "转台",
+    sneeze: "打喷嚏",
+    shiver: "发抖",
+    stretch: "伸懒腰",
+    doze: "打盹",
+    pace: "踱步",
+    wink: "眨眼",
   },
   shapes: {
     blob: "团块",
@@ -342,6 +359,8 @@ const ZH: CopySet = {
     house: "小屋",
     star: "星星",
     pumpkin: "南瓜",
+    ghost: "幽灵",
+    cookie: "饼干",
   },
   colors: {
     black: "黑色",
@@ -364,6 +383,7 @@ const ZH: CopySet = {
     surprised: "惊讶",
     inspecting: "审视",
     squinted: "眯眼",
+    wink: "眨眼",
   },
   morphs: {
     thinking: "思考",

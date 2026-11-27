@@ -117,6 +117,28 @@ const EyeLayer = ({
   const eyeWidth = radius * 0.19;
   const eyeHeight = radius * 0.4 * faceScale * blinkScale;
 
+  if (frame.face === "wink" && frame.blink < 0.4) {
+    const rightX = gap + lookX;
+    return (
+      <g>
+        <ellipse
+          cx={-gap + lookX}
+          cy={eyeY + lookY}
+          fill={eyeColor}
+          rx={eyeWidth / 2}
+          ry={Math.max(0.8, eyeHeight / 2)}
+        />
+        <path
+          d={`M${rightX - eyeWidth / 2} ${eyeY + lookY} Q${rightX} ${eyeY - radius * 0.07 + lookY} ${rightX + eyeWidth / 2} ${eyeY + lookY}`}
+          fill="none"
+          stroke={eyeColor}
+          strokeLinecap="round"
+          strokeWidth={radius * 0.055}
+        />
+      </g>
+    );
+  }
+
   if (frame.face === "happy" && frame.blink < 0.4) {
     return (
       <g fill="none" stroke={eyeColor} strokeLinecap="round" strokeWidth={radius * 0.055}>

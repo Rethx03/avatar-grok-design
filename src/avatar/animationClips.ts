@@ -11,6 +11,14 @@ export interface MotionClip {
   readonly squash: number;
   readonly wobble: number;
   readonly ease: Ease;
+  /** Constant lean on the X axis (degrees), blended in by the clip bridge. */
+  readonly pitch?: number;
+  /** Constant lean on the Z axis (degrees), blended in by the clip bridge. */
+  readonly roll?: number;
+  /** Repeats the motion pattern this many times per clip (default 1). */
+  readonly cycles?: number;
+  /** Blinks per clip (default 2). */
+  readonly blinks?: number;
 }
 
 export interface StateDefinition {
@@ -24,6 +32,13 @@ export interface StateDefinition {
 
 export const STANDARD_EASE: Ease = [0.42, 0, 0.58, 1];
 
+interface ClipExtras {
+  readonly pitch?: number;
+  readonly roll?: number;
+  readonly cycles?: number;
+  readonly blinks?: number;
+}
+
 const clip = (
   name: string,
   duration: number,
@@ -32,6 +47,7 @@ const clip = (
   spin: number,
   squash: number,
   wobble: number,
+  extras: ClipExtras = {},
 ): MotionClip => ({
   name,
   duration,
@@ -41,6 +57,7 @@ const clip = (
   squash,
   wobble,
   ease: STANDARD_EASE,
+  ...extras,
 });
 
 export const MOTION_CLIPS: Readonly<Record<string, MotionClip>> = {
@@ -72,6 +89,45 @@ export const MOTION_CLIPS: Readonly<Record<string, MotionClip>> = {
   Logo_A: clip("Logo_A", 4, 0.8, 5, 3.8, 0.025, 0.55),
   Logo_B: clip("Logo_B", 4, 1, 7, 4.2, 0.03, 0.65),
   Bodymoves_A: clip("Bodymoves_A", 3.6, 3.5, 13, 2.8, 0.1, 1.9),
+
+  // ---- Lab clips: new behaviours built from the same clip model ----
+  // Sneeze: slow lean back, sharp forward jolt, settle. Pitch is bridged
+  // between clips (0.28 s), so the snap comes from the clip switch itself.
+  Sneeze_A: clip("Sneeze_A", 0.55, 0.6, 4, 0, 0.03, 0.7, {
+    pitch: -10,
+    blinks: 0,
+  }),
+  Sneeze_B: clip("Sneeze_B", 0.22, 2.2, 8, 0, 0.13, 1.4, {
+    pitch: 22,
+    blinks: 1,
+  }),
+  Sneeze_C: clip("Sneeze_C", 0.5, 0.9, 3, 0, 0.02, 0.55, {
+    pitch: 3,
+    blinks: 0,
+  }),
+  // Shiver: six compressed motion cycles per second, no blinks.
+  Shiver_A: clip("Shiver_A", 1, 0.3, 2, 0, 0.012, 1.3, {
+    pitch: 1.5,
+    cycles: 6,
+    blinks: 0,
+  }),
+  // Stretch: long slow arch backwards with a deep squash.
+  Stretch_A: clip("Stretch_A", 1.5, 1.7, 5, 0, 0.09, 0.6, {
+    pitch: -8,
+    blinks: 1,
+  }),
+  // Doze: almost still, very slow breathing, no blinking.
+  Doze_A: clip("Doze_A", 4.5, 0.35, 1.2, 0, 0.008, 0.18, {
+    pitch: 1.2,
+    blinks: 0,
+  }),
+  Pace_A: clip("Pace_A", 2.4, 0.9, 2, 0, 0.02, 0.5, {
+    cycles: 2,
+    blinks: 1,
+  }),
+  Wink_A: clip("Wink_A", 0.8, 1.2, 6, 0, 0.02, 0.8, {
+    blinks: 0,
+  }),
 };
 
 const WORKING: readonly string[] = [
@@ -84,7 +140,7 @@ const WORKING: readonly string[] = [
 ];
 
 export const STATE_DEFINITIONS: Readonly<
-  Record<MarkState, StateDefinition>
+  Record<string, StateDefinition>
 > = {
   idle: {
     clips: ["Idle_B", "Idle_B", "Idle_D", "Idle_B", "Idle_A"],
@@ -157,6 +213,42 @@ export const STATE_DEFINITIONS: Readonly<
     clips: ["Marketing_A", "Marketing_B", "Marketing_C", "Marketing_D"],
   },
   turntable: { clips: ["Rotation_B"] },
+
+  // ---- Lab states: not listed in MARK_STATE_GROUPS, so the app UI and the
+  // vendored engine never receive them. They are playable by MarkMotionEngine. ----
+  sneeze: {
+    clips: ["Sneeze_A", "Sneeze_B", "Sneeze_C"],
+    face: "squinted",
+    next: "idle",
+  },
+  shiver: {
+    clips: ["Shiver_A"],
+    face: "surprised",
+    next: "idle",
+    holdSeconds: 2.4,
+  },
+  stretch: {
+    clips: ["Stretch_A", "Idle_B"],
+    face: "sleepy",
+    next: "idle",
+  },
+  doze: {
+    clips: ["Doze_A"],
+    face: "sleepy",
+    next: "waking",
+    holdSeconds: 5.5,
+  },
+  pace: {
+    clips: ["Pace_A"],
+    face: "calm",
+    next: "idle",
+    holdSeconds: 4,
+  },
+  wink: {
+    clips: ["Wink_A"],
+    face: "wink",
+    next: "idle",
+  },
 };
 
 export const clipProfile = (name: string): MotionClip =>

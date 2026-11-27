@@ -1,4 +1,3 @@
-// Third-party-derived Mark engine code. See the repository distribution notice.
 var e = (loader, exports) => () => (exports || (loader((exports = { exports: {} }).exports, exports), loader = null), exports.exports);
 var zn = e => ({
     x: e,
@@ -180,9 +179,9 @@ var yr = (() => {
     if (t == null || n == null) throw Error(`Motion Lab defines exactly two eye capsules`);
     return [e(t), e(n)];
   })(),
-  wr = `sphere.cloud.square.sparkle.clover.heartChubby.starFlower.teardrop.tablet.wedge.house.star6.pebble.bean.egg.squircle.capsule.cylinder.hex.gem.crystal.shield.dome.arch.leaf.pumpkin`.split(`.`),
+  wr = `sphere.cloud.square.sparkle.clover.heartChubby.starFlower.teardrop.tablet.wedge.house.star6.pebble.bean.egg.squircle.capsule.cylinder.hex.gem.crystal.shield.dome.arch.leaf.pumpkin.ghost.cookie`.split(`.`),
   Tr = new Set([`pumpkin`]),
-  Er = [`neutral`, `happy`, `surprised`, `sad`, `sleepy`, `squinted`, `calm`, `inspecting`, `confused`],
+  Er = [`neutral`, `happy`, `surprised`, `sad`, `sleepy`, `squinted`, `calm`, `inspecting`, `confused`, `wink`],
   Dr = .26,
   Or = 18,
   kr = new Map([[`thinking`, `sad`], [`strange`, `inspecting`], [`angry`, `neutral`], [`inspect`, `inspecting`], [`squint`, `squinted`], [`idle`, `neutral`], [`smile`, `happy`], [`sleep`, `sleepy`]]),
@@ -328,7 +327,8 @@ var Br = {
     p1: [-.17, 0],
     p2: [.01, -.16],
     isArc: !1
-  }, [0, 0]))
+  }, [0, 0])),
+  wink: [Lr(Dr, .57, 0, 0), Lr(Dr, .5, 90, .01)]
 };
 function Vr(e) {
   return Er.some(t => t === e);
@@ -1576,6 +1576,168 @@ function Oa(e) {
 function ka(e) {
   return e.spotPaint ?? Da(e.spot);
 }
+function __labBell(e, t, n) {
+  let r = Math.atan2(Math.sin(e - t), Math.cos(e - t));
+  return Math.exp(-(r * r) / (n * n));
+}
+function __labClip(e, t, n = {}) {
+  let r = n.pitch || 0,
+    i = n.pitchWave || 0,
+    a = n.roll || 0,
+    o = n.tilt == null ? 6 : n.tilt,
+    s = n.bob == null ? 1.2 : n.bob,
+    c = n.wobble == null ? .8 : n.wobble,
+    l = n.squash == null ? .02 : n.squash,
+    u = Math.max(1, Math.round(n.cycles || 1)),
+    d = Math.max(0, Math.round(n.blinks == null ? 2 : n.blinks)),
+    f = Math.max(10, Math.round(t * 10 + u * 8)),
+    p = Math.min(.074, Math.max(.012, s * .018)),
+    yawBase = n.yaw || 0,
+    yawAmp = n.yawWave || 0,
+    swayX = n.swayX,
+    m = [],
+    h = [],
+    g = [],
+    _ = [],
+    v = [],
+    y = [.42, 0, .58, 1];
+  for (let e = 0; e <= f; e++) {
+    let n = e / f,
+      s = n * Math.PI * 2 * u,
+      b = Math.sin(s),
+      x = Math.cos(s),
+      S = Math.abs(Math.sin(Math.PI * n));
+    m.push({
+      t: t * n,
+      v: [swayX == null ? p * .22 * Math.sin(2 * s + .6) : swayX * b, -p * b * (e === 0 || e === f ? 0 : 1)],
+      ease: y
+    }), h.push({
+      t: t * n,
+      v: [r + i * b, yawBase + yawAmp * b + o * .6 * Math.cos(s), a + c * 2.4 * b],
+      ease: y
+    }), g.push({
+      t: t * n,
+      v: [.6 * (1 + l * .5 * S)],
+      ease: y
+    }), l > .015 && _.push({
+      t: t * n,
+      v: [1 + l * .9 * S, 1 - l * .9 * S],
+      ease: y
+    });
+  }
+  for (let e = 0; e < d; e++) v.push({
+    t: t * (d === 1 ? .56 : .37 + .39 * e / (d - 1)),
+    v: `blink`,
+    ease: y
+  });
+  return {
+    name: e,
+    duration: t,
+    body: `sphere`,
+    squashAnchor: 0,
+    workArea: {
+      start: 0,
+      end: t
+    },
+    inspect: {
+      bias: -1,
+      follow: !0
+    },
+    tracks: {
+      position: m,
+      rotation: h,
+      scale: g,
+      ...(_.length > 0 ? {
+        squash: _
+      } : {}),
+      expression: v
+    }
+  };
+}
+var __labClips = [
+  __labClip(`Sneeze_A`, .55, {
+    pitch: -10,
+    pitchWave: -1.5,
+    tilt: 4,
+    bob: .6,
+    wobble: .7,
+    squash: .02,
+    blinks: 0
+  }),
+  __labClip(`Sneeze_B`, .22, {
+    pitch: 22,
+    pitchWave: 3,
+    tilt: 8,
+    bob: 2.2,
+    wobble: 1.4,
+    squash: .13,
+    blinks: 1
+  }),
+  __labClip(`Sneeze_C`, .5, {
+    pitch: 3,
+    pitchWave: 1,
+    tilt: 3,
+    bob: .9,
+    wobble: .55,
+    squash: .02,
+    blinks: 0
+  }),
+  __labClip(`Shiver_A`, 1, {
+    pitch: 1.5,
+    pitchWave: .6,
+    tilt: 2,
+    bob: .3,
+    wobble: 1.3,
+    squash: .012,
+    cycles: 6,
+    blinks: 0
+  }),
+  __labClip(`Stretch_A`, 1.5, {
+    pitch: -8,
+    pitchWave: -2,
+    tilt: 5,
+    bob: 1.7,
+    wobble: .6,
+    squash: .09,
+    blinks: 1
+  }),
+  __labClip(`Stretch_B`, .6, {
+    pitch: -2,
+    pitchWave: .8,
+    tilt: 3,
+    bob: .8,
+    wobble: .5,
+    squash: .02,
+    blinks: 1
+  }),
+  __labClip(`Doze_A`, 4.5, {
+    pitch: 1.2,
+    pitchWave: .4,
+    tilt: 1.2,
+    bob: .35,
+    wobble: .18,
+    squash: .008,
+    blinks: 0
+  }),
+  __labClip(`Pace_A`, 2.4, {
+    cycles: 2,
+    swayX: .1,
+    yawWave: 16,
+    tilt: 2,
+    bob: .9,
+    wobble: .5,
+    squash: .02,
+    blinks: 1
+  }),
+  __labClip(`Wink_A`, .8, {
+    pitch: 2,
+    tilt: 6,
+    bob: 1.2,
+    wobble: .8,
+    squash: .02,
+    blinks: 0
+  })
+];
 var Aa = [{
     name: `Blocked_A`,
     duration: 2.12,
@@ -3420,7 +3582,7 @@ var Aa = [{
         ease: [.42, 0, .58, 1]
       }]
     }
-  }],
+  }, ...__labClips],
   ja = 120,
   Ma = {
     clips: [`Working_A`, `Working_B`, `Working_C`, `Working_D`, `Working_E`, `Working_F`]
@@ -3611,6 +3773,39 @@ var Aa = [{
     },
     turntable: {
       clips: [`Rotation_B`]
+    },
+    sneeze: {
+      clips: [`Sneeze_A`, `Sneeze_B`, `Sneeze_C`],
+      face: `squinted`,
+      next: `idle`
+    },
+    shiver: {
+      clips: [`Shiver_A`],
+      face: `surprised`,
+      next: `idle`,
+      holdSeconds: 2.4
+    },
+    stretch: {
+      clips: [`Stretch_A`, `Stretch_B`],
+      face: `sleepy`,
+      next: `idle`
+    },
+    doze: {
+      clips: [`Doze_A`],
+      face: `sleepy`,
+      next: `waking`,
+      holdSeconds: 5.5
+    },
+    pace: {
+      clips: [`Pace_A`],
+      face: `calm`,
+      next: `idle`,
+      holdSeconds: 4
+    },
+    wink: {
+      clips: [`Wink_A`],
+      face: `wink`,
+      next: `idle`
     }
   },
   Pa = new Map(Aa.map(e => [e.name, e]));
@@ -3871,6 +4066,18 @@ var Ba = .26,
       height: .41039999999999993,
       gap: .44799999999999995,
       shiftY: .039999999999999994
+    },
+    ghost: {
+      width: .21,
+      height: .48,
+      gap: .47,
+      shiftY: .12
+    },
+    cookie: {
+      width: .22,
+      height: .49,
+      gap: .48,
+      shiftY: .12
     }
   };
 function Qa(e, t) {
@@ -5063,7 +5270,24 @@ var Ao = [{
     house: () => Jo(100, 110, 78, 29),
     heart: () => Yo,
     sparkle: () => Zo,
-    star6: () => Xo
+    star6: () => Xo,
+    ghost: () => {
+      let e = new Mo(),
+        t = B - 20,
+        n = 96;
+      e.move(B - n, B + 42).line(B - n, t).arc(B, t, n, n, Math.PI, Math.PI * 2).line(B + n, B + 42);
+      let o = n * 2 / 5,
+        s = o * .18;
+      for (let r = 0; r < 5; r++) {
+        let i = B + n - r * o;
+        e.curve(i - s, B + 58, i - o + s, B + 58, i - o, B + 42);
+      }
+      return e.close();
+    },
+    cookie: () => Po(e => {
+      let t = (1 - .46 * __labBell(e, -.5, .24) + .012 * Math.sin(9 * e) + .007 * Math.sin(5 * e + 1.2)) * 112;
+      return [B + Math.cos(e) * t * 1.02, B + Math.sin(e) * t * .98];
+    }, 128)
   },
   fs = new Map();
 function ps(e) {
@@ -5236,6 +5460,8 @@ var U = (e, t = 4) => ns(ps(e).path, t),
     clover: () => Bs(1.0881, Ks(U(`clover`))),
     heartChubby: () => Us(1.3571999999999997, Ao, .62),
     house: () => Bs(1.17, Ks(U(`house`))),
+    ghost: () => Us(1.24, Ks(U(`ghost`)), .9),
+    cookie: () => Bs(1.2, Ks(U(`cookie`))),
     star6: () => Vs(1.4976, Ks(U(`star6`)), .3, .18)
   },
   Ms = new Map(),

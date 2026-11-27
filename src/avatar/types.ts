@@ -25,6 +25,8 @@ export const SHAPE_OPTIONS = [
   { id: "house", label: "House" },
   { id: "star", label: "Star" },
   { id: "pumpkin", label: "Pumpkin" },
+  { id: "ghost", label: "Ghost" },
+  { id: "cookie", label: "Cookie" },
 ] as const;
 
 export type BotShape = (typeof SHAPE_OPTIONS)[number]["id"];
@@ -116,6 +118,10 @@ export const MARK_STATE_GROUPS = [
     label: "Brand",
     states: ["logo", "showcase", "turntable"],
   },
+  {
+    label: "Lab",
+    states: ["sneeze", "shiver", "stretch", "doze", "pace", "wink"],
+  },
 ] as const;
 
 export type MarkState = (typeof MARK_STATE_GROUPS)[number]["states"][number];
@@ -127,7 +133,8 @@ export type Face =
   | "sleepy"
   | "surprised"
   | "inspecting"
-  | "squinted";
+  | "squinted"
+  | "wink";
 
 export type Morph =
   | "thinking"

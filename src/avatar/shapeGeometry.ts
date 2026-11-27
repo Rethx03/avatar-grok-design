@@ -1,4 +1,5 @@
 import type { BotShape } from "./types";
+import { getLabForm } from "./lab/forms";
 
 interface ShapeMetrics {
   readonly scaleX: number;
@@ -41,6 +42,8 @@ const METRICS: Readonly<Record<BotShape, ShapeMetrics>> = {
   house: { scaleX: 0.92, scaleY: 0.98, eyeGap: 0.27, eyeY: 0.02, shiftY: 0.04 },
   star: { scaleX: 0.98, scaleY: 0.98, eyeGap: 0.27, eyeY: 0.01, shiftY: 0.04 },
   pumpkin: { scaleX: 1.02, scaleY: 0.91, eyeGap: 0.31, eyeY: 0.02, shiftY: 0.05 },
+  ghost: { scaleX: 1, scaleY: 1.04, eyeGap: 0.3, eyeY: 0.01, shiftY: 0.05 },
+  cookie: { scaleX: 1.02, scaleY: 0.98, eyeGap: 0.3, eyeY: 0, shiftY: 0.04 },
 };
 
 const TAU = Math.PI * 2;
@@ -168,6 +171,11 @@ const rawPoint = (shape: BotShape, angle: number): { x: number; y: number } => {
     case "pumpkin": {
       const lobes = 1 + 0.035 * Math.cos(8 * angle);
       return { x: c * lobes * 1.03, y: s * lobes * 0.9 };
+    }
+    case "ghost":
+    case "cookie": {
+      const radius = getLabForm(shape).radius(angle);
+      return { x: c * radius, y: s * radius };
     }
   }
 };

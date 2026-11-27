@@ -103,30 +103,40 @@ export interface GeneratedClipSection extends RecipeSection {
  * Expands the compact clip profile into real keyframe tracks. These curves are
  * authored for this reconstruction; they approximate the observed rhythm while
  * keeping the runtime data readable and independently tunable.
+ *
+ * `pitch`/`roll` add a constant lean that the clip bridge blends in and out;
+ * `cycles` repeats the whole motion pattern inside the same duration (used by
+ * the shiver lab clip); `blinks` controls the blink count.
  */
 export const createClipSection = (
   profile: MotionClip,
 ): GeneratedClipSection => {
   const duration = profile.duration;
+  const cycles = Math.max(1, Math.round(profile.cycles ?? 1));
+  const pitch = profile.pitch ?? 0;
+  const roll = profile.roll ?? 0;
   const travel = clamp(profile.bob * 0.018, 0.012, 0.074);
   const tilt = profile.tilt;
   const wobble = profile.wobble;
   const squash = clamp(profile.squash, 0.008, 0.12);
 
-  return {
-    name: profile.name,
-    duration,
-    sourceClip: profile,
-    spinRadians: profile.spin,
-    position: vectorTrack([
-      [0, [0, 0]],
-      [duration * 0.18, [travel * 0.18, travel], BRIDGE_EASING],
-      [duration * 0.42, [-travel * 0.62, -travel * 0.22]],
-      [duration * 0.7, [travel * 0.56, travel * 0.33], BRIDGE_EASING],
-      [duration * 0.88, [0, -travel * 0.16]],
-      [duration, [0, 0]],
-    ]),
-    rotation: vectorTrack([
+  const tile = <T extends readonly number[]>(
+    track: readonly VectorKeyframe<T>[],
+  ): readonly VectorKeyframe<T>[] => {
+    if (cycles === 1) return track;
+    const span = duration / cycles;
+    const out: VectorKeyframe<T>[] = [];
+    for (let cycle = 0; cycle < cycles; cycle += 1) {
+      for (const keyframe of track) {
+        if (cycle > 0 && keyframe.time <= 1e-9) continue;
+        out.push({ ...keyframe, time: cycle * span + keyframe.time / cycles });
+      }
+    }
+    return out;
+  };
+
+  const baseRotation = tile(
+    vectorTrack<Vector3>([
       [0, [0, 0, 0]],
       [
         duration * 0.16,
@@ -138,27 +148,68 @@ export const createClipSection = (
       [duration * 0.85, [tilt * 0.08, -tilt * 0.17, wobble * 0.5]],
       [duration, [0, 0, 0]],
     ]),
-    scale: vectorTrack([
-      [0, [1, 1]],
-      [
-        duration * 0.23,
-        [1 + squash * 0.72, 1 - squash * 0.84],
-        BRIDGE_EASING,
-      ],
-      [duration * 0.48, [1 - squash * 0.48, 1 + squash * 0.68]],
-      [duration * 0.71, [1 + squash * 0.22, 1 - squash * 0.26]],
-      [duration * 0.9, [1 - squash * 0.08, 1 + squash * 0.1]],
-      [duration, [1, 1]],
-    ]),
-    zoom: vectorTrack([
-      [0, [DEFAULT_ZOOM]],
-      [duration * 0.48, [DEFAULT_ZOOM * 1.025], BRIDGE_EASING],
-      [duration, [DEFAULT_ZOOM]],
-    ]),
-    expressions: [
-      { time: duration * 0.37, value: "blink" },
-      { time: duration * 0.76, value: "blink" },
-    ],
+  );
+  const rotation =
+    pitch === 0 && roll === 0
+      ? baseRotation
+      : baseRotation.map((keyframe) => ({
+          ...keyframe,
+          value: [
+            keyframe.value[0] + pitch,
+            keyframe.value[1],
+            keyframe.value[2] + roll,
+          ] as Vector3,
+        }));
+
+  const blinks = Math.max(0, Math.min(6, Math.round(profile.blinks ?? 2)));
+  const expressions: ExpressionKeyframe[] = Array.from(
+    { length: blinks },
+    (_, index) => ({
+      time:
+        duration *
+        (blinks === 1 ? 0.56 : 0.37 + (0.39 * index) / (blinks - 1)),
+      value: "blink",
+    }),
+  );
+
+  return {
+    name: profile.name,
+    duration,
+    sourceClip: profile,
+    spinRadians: profile.spin,
+    position: tile(
+      vectorTrack([
+        [0, [0, 0]],
+        [duration * 0.18, [travel * 0.18, travel], BRIDGE_EASING],
+        [duration * 0.42, [-travel * 0.62, -travel * 0.22]],
+        [duration * 0.7, [travel * 0.56, travel * 0.33], BRIDGE_EASING],
+        [duration * 0.88, [0, -travel * 0.16]],
+        [duration, [0, 0]],
+      ]),
+    ),
+    rotation,
+    scale: tile(
+      vectorTrack([
+        [0, [1, 1]],
+        [
+          duration * 0.23,
+          [1 + squash * 0.72, 1 - squash * 0.84],
+          BRIDGE_EASING,
+        ],
+        [duration * 0.48, [1 - squash * 0.48, 1 + squash * 0.68]],
+        [duration * 0.71, [1 + squash * 0.22, 1 - squash * 0.26]],
+        [duration * 0.9, [1 - squash * 0.08, 1 + squash * 0.1]],
+        [duration, [1, 1]],
+      ]),
+    ),
+    zoom: tile(
+      vectorTrack([
+        [0, [DEFAULT_ZOOM]],
+        [duration * 0.48, [DEFAULT_ZOOM * 1.025], BRIDGE_EASING],
+        [duration, [DEFAULT_ZOOM]],
+      ]),
+    ),
+    expressions,
   };
 };
 
