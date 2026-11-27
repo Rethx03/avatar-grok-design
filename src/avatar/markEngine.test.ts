@@ -4,7 +4,7 @@ import {
   createAppearance,
   createMarkEngine,
   defaultFill,
-} from "../engine/grok-bot-mark/mark-engine.js";
+} from "../engine/mark-engine.js";
 import {
   createMarkEngineForOptions,
   resolveColorHex,

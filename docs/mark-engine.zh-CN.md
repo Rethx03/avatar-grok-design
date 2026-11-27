@@ -1,7 +1,7 @@
 # Grok Bot Mark 引擎架构
 
 本文描述当前独立 Mark 引擎的运行结构。引擎入口位于
-[`mark-engine.js`](../src/engine/grok-bot-mark/mark-engine.js)，React 适配位于
+[`mark-engine.js`](../src/engine/mark-engine.js)，React 适配位于
 [`markEngine.ts`](../src/avatar/markEngine.ts) 和
 [`MarkCanvas.tsx`](../src/avatar/MarkCanvas.tsx)。
 

@@ -61,7 +61,7 @@ src/
 │  ├─ MarkCanvas.tsx         React lifecycle and browser attachment
 │  ├─ reconstruction/        motion primitives used by the fallback renderer
 │  └─ GrokBotMark.tsx        fallback UI and behavioral renderer
-├─ engine/grok-bot-mark/     standalone Mark engine runtime
+├─ engine/                   standalone Mark engine runtime
 ├─ App.tsx                   interactive control surface
 ├─ i18n.ts                   English and Chinese interface copy
 └─ styles.css                responsive layout and visual styling

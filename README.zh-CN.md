@@ -58,7 +58,7 @@ src/
 │  ├─ MarkCanvas.tsx         React 生命周期与浏览器绑定
 │  ├─ reconstruction/        备用渲染器使用的动作原语
 │  └─ GrokBotMark.tsx        备用界面与行为渲染器
-├─ engine/grok-bot-mark/     独立 Mark 引擎运行时
+├─ engine/                   独立 Mark 引擎运行时
 ├─ App.tsx                   交互控制界面
 ├─ i18n.ts                   中英文界面文案
 └─ styles.css                响应式布局与视觉样式

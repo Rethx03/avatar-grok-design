@@ -5,7 +5,7 @@ import {
   defaultFill,
   type MarkEngine,
   type MarkEngineInput,
-} from "../engine/grok-bot-mark/mark-engine.js";
+} from "../engine/mark-engine.js";
 import type { BotColor, BotShape } from "./types";
 import { COLOR_OPTIONS } from "./types";
 
@@ -13,7 +13,7 @@ export type {
   MarkAppearance,
   MarkEngine,
   MarkEngineInput,
-} from "../engine/grok-bot-mark/mark-engine.js";
+} from "../engine/mark-engine.js";
 
 export interface MarkEngineOptions {
   readonly id: string;
